@@ -345,4 +345,3 @@ Alguns itens que ainda devem entrar conforme o projeto evoluir:
 ## Responsáveis
 
 - Daniel Costa
-- Equipe de desenvolvimento do SISPROM
