@@ -1,210 +1,348 @@
-# SISPROM - API Backend
+# SISPROM
 
-API REST construída com **Django 6** + **Django REST Framework**
+Backend da API do projeto SISPROM, construído com Django e Django REST Framework.
 
-## 🛠️ Stack
+Este repositório está no começo da estruturação. Hoje ele entrega a base do projeto, autenticação com JWT e configurações iniciais para a equipe desenvolver com mais segurança e padrão.
 
-| Tecnologia | Versão | Função |
-|------------|--------|--------|
-| Python | 3.12+ | Linguagem |
-| Django | 6.0 | Framework web |
-| DRF | 3.17 | API REST |
-| SimpleJWT | 5.3 | Autenticação JWT |
-| SQLite | - | Banco de dados (dev) |
+## Antes de começar
 
-## 🚀 Setup do Projeto
+Se você é novo no projeto, siga esta ordem:
 
-### 1. Clone o repositório
+1. Clone o repositório.
+2. Crie um ambiente virtual.
+3. Instale as dependências.
+4. Configure o arquivo `.env`.
+5. Rode as migrations.
+6. Inicie o servidor.
+
+Se alguma etapa falhar, pare nela e corrija antes de ir para a próxima.
+
+## Tecnologias usadas
+
+- Python 3.12+
+- Django 6
+- Django REST Framework
+- Simple JWT
+- SQLite no ambiente de desenvolvimento
+- `python-decouple` para variáveis de ambiente
+
+## Subindo o projeto localmente
+
+### 1. Clonar o repositório
 
 ```bash
-git clone https://github.com/SEU_USUARIO/sisprom.git
+git clone https://github.com/Nielssouza/sisprom.git
 cd sisprom
 ```
 
-### 2. Crie e ative um ambiente virtual (opcional, mas recomendado)
+### 2. Criar e ativar o ambiente virtual
 
 ```bash
 python -m venv venv
+```
 
-# Windows
+No Windows:
+
+```bash
 venv\Scripts\activate
+```
 
-# Linux/Mac
+No Linux ou macOS:
+
+```bash
 source venv/bin/activate
 ```
 
-### 3. Instale as dependências
+### 3. Instalar as dependências
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Configure as variáveis de ambiente
+### 4. Criar o arquivo `.env`
+
+Use o arquivo de exemplo como base:
 
 ```bash
-# Copie o arquivo de exemplo
-copy .env.example .env   # Windows
-cp .env.example .env     # Linux/Mac
+copy .env.example .env
 ```
 
-Edite o `.env` e gere uma nova SECRET_KEY:
+Se estiver no Linux ou macOS:
+
+```bash
+cp .env.example .env
+```
+
+Hoje o projeto usa estas variáveis:
+
+```env
+SECRET_KEY=sua-chave-secreta-aqui
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
+```
+
+Se quiser gerar uma `SECRET_KEY` nova:
 
 ```bash
 python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
 ```
 
-### 5. Rode as migrations
+### 5. Aplicar as migrations
 
 ```bash
 python manage.py migrate
 ```
 
-### 6. Crie um superusuário
+### 6. Criar um superusuário
+
+Esse passo é importante para acessar o painel do Django.
 
 ```bash
 python manage.py createsuperuser
 ```
 
-### 7. Rode o servidor
+### 7. Rodar o servidor
 
 ```bash
 python manage.py runserver
 ```
 
-A API estará disponível em `http://localhost:8000/`
+Depois disso, a aplicação deve estar disponível em:
 
----
+- Home: `http://127.0.0.1:8000/`
+- Admin: `http://127.0.0.1:8000/admin/`
+- API: `http://127.0.0.1:8000/api/` ou pelos endpoints listados abaixo
 
-## 🔐 Autenticação JWT
+## O que já existe no projeto
 
-### Obter token (login)
+Hoje este repositório possui:
 
-```bash
+- estrutura base de um projeto Django
+- Django REST Framework configurado
+- autenticação com JWT
+- CORS liberado para desenvolvimento
+- paginação padrão da API
+- painel administrativo do Django
+- pasta global de templates configurada
+- página inicial em Django Template para apoio no onboarding
+
+Importante: ainda não existem apps de negócio cadastrados além da configuração base do projeto.
+
+## Endpoints disponíveis hoje
+
+### Autenticação JWT
+
+Gerar token:
+
+```http
 POST /api/token/
-Content-Type: application/json
-
-{
-    "username": "seu_usuario",
-    "password": "sua_senha"
-}
 ```
 
-**Resposta:**
+Exemplo de corpo:
+
 ```json
 {
-    "access": "eyJ0eXAiOiJKV1Q...",
-    "refresh": "eyJ0eXAiOiJKV1Q..."
+  "username": "seu_usuario",
+  "password": "sua_senha"
 }
 ```
 
-### Usar o token nas requisições
+Renovar token:
 
-```bash
-GET /api/seu-endpoint/
-Authorization: Bearer eyJ0eXAiOiJKV1Q...
-```
-
-### Renovar token
-
-```bash
+```http
 POST /api/token/refresh/
-Content-Type: application/json
-
-{
-    "refresh": "eyJ0eXAiOiJKV1Q..."
-}
 ```
 
----
+Validar token:
 
-## 📂 Estrutura do Projeto
-
+```http
+POST /api/token/verify/
 ```
+
+### Login do browsable API
+
+```http
+/api-auth/
+```
+
+## Como autenticar nas requisições
+
+Depois de obter o token, envie o `access` no cabeçalho:
+
+```http
+Authorization: Bearer seu_token_aqui
+```
+
+Observação: a permissão padrão do projeto está como `IsAuthenticated`, então, em geral, os endpoints da API vão exigir autenticação.
+
+## Estrutura atual do projeto
+
+```text
 sisprom/
-├── core/                # Configurações do projeto Django
-│   ├── settings.py      # Settings (DRF, JWT, CORS configurados)
-│   ├── urls.py          # Rotas principais
-│   ├── wsgi.py
-│   └── asgi.py
-├── .env.example         # Template das variáveis de ambiente
-├── .gitignore
-├── manage.py
-├── requirements.txt
-└── README.md
+|-- core/
+|   |-- settings.py
+|   |-- urls.py
+|   |-- asgi.py
+|   |-- wsgi.py
+|-- templates/
+|   |-- home.html
+|-- .env.example
+|-- manage.py
+|-- requirements.txt
+|-- README.md
 ```
 
----
+## Templates do Django
 
-## 🌿 Fluxo de Trabalho com Git (Squad)
+Hoje o projeto está focado em API, mas agora ele tambem ja vem preparado para renderizar paginas HTML com templates do Django.
 
-### Branches
+No estado atual:
 
-| Branch | Uso |
-|--------|-----|
-| `main` | Código estável, pronto para produção |
-| `develop` | Branch de integração — merges das features vão pra cá |
-| `feature/nome-da-feature` | Cada tarefa/feature nova |
-| `bugfix/descricao-do-bug` | Correções de bugs |
+- `APP_DIRS = True` já está habilitado no `core/settings.py`
+- isso permite que o Django encontre templates dentro dos apps automaticamente
+- `DIRS` aponta para a pasta global `templates/`
+- a rota `/` ja renderiza o arquivo `templates/home.html`
 
-### Workflow
+### Estrutura que ja existe no projeto
 
-1. **Sempre parta da `develop`** para criar sua branch:
-   ```bash
-   git checkout develop
-   git pull origin develop
-   git checkout -b feature/minha-feature
-   ```
+```text
+sisprom/
+|-- templates/
+|   |-- home.html
+|-- core/
+|-- manage.py
+```
 
-2. **Faça commits pequenos e descritivos:**
-   ```bash
-   git add .
-   git commit -m "feat: adiciona model de Produto"
-   ```
+Essa home inicial serve como exemplo pratico para a equipe entender como o Django encontra e renderiza um template.
 
-3. **Suba sua branch e abra um Pull Request para `develop`:**
-   ```bash
-   git push origin feature/minha-feature
-   ```
+### Estrutura recomendada dentro de um app
 
-4. **Peça code review** de pelo menos 1 colega antes do merge.
+Quando um app precisar de páginas HTML, o padrão recomendado é:
 
-5. **Após aprovação**, faça o merge via GitHub (Squash and Merge).
+```text
+meu_app/
+|-- templates/
+|   |-- meu_app/
+|       |-- home.html
+```
 
-### Convenção de Commits
+Esse padrão evita conflito entre arquivos com o mesmo nome em apps diferentes.
 
-| Prefixo | Uso |
-|---------|-----|
-| `feat:` | Nova funcionalidade |
-| `fix:` | Correção de bug |
-| `docs:` | Documentação |
-| `refactor:` | Refatoração sem mudar comportamento |
-| `test:` | Testes |
-| `chore:` | Tarefas gerais (configs, deps) |
+### Exemplo de view usando template
 
----
+```python
+from django.shortcuts import render
 
-## 📝 Criando um Novo App
+
+def home(request):
+    return render(request, "meu_app/home.html")
+```
+
+Resumo prático: a pasta global ja esta pronta para paginas compartilhadas, e os apps podem continuar usando suas proprias pastas `templates/` quando fizer sentido.
+
+## Comandos úteis no dia a dia
+
+Rodar o servidor:
+
+```bash
+python manage.py runserver
+```
+
+Criar migrations:
+
+```bash
+python manage.py makemigrations
+```
+
+Aplicar migrations:
+
+```bash
+python manage.py migrate
+```
+
+Criar um novo app:
 
 ```bash
 python manage.py startapp nome_do_app
 ```
 
-Depois, adicione ao `INSTALLED_APPS` em `core/settings.py`:
+## Fluxo de trabalho com Git
 
-```python
-INSTALLED_APPS = [
-    ...
-    # Apps do projeto
-    'nome_do_app',
-]
+Para evitar conflito e bagunça no histórico:
+
+1. Atualize sua branch antes de começar.
+2. Crie uma branch para a sua tarefa.
+3. Faça commits pequenos e com mensagem clara.
+4. Envie sua branch para o GitHub.
+5. Abra um Pull Request.
+
+Exemplo:
+
+```bash
+git checkout main
+git pull origin main
+git checkout -b feature/nome-da-tarefa
 ```
 
----
+Exemplo de commit:
 
-## 👥 Equipe
+```bash
+git add .
+git commit -m "feat: adiciona endpoint de produtos"
+```
 
-| Nome | Papel |
-|------|-------|
-| Daniel Costa | Tech Lead |
-| Estagiário 1 | Dev |
-| Estagiário 2 | Dev |
+Subindo a branch:
+
+```bash
+git push origin feature/nome-da-tarefa
+```
+
+## Padrão de commits
+
+- `feat:` nova funcionalidade
+- `fix:` correção de bug
+- `docs:` documentação
+- `refactor:` refatoração sem alterar regra de negócio
+- `test:` testes
+- `chore:` ajustes de configuração, dependências ou manutenção
+
+## Dicas para quem está chegando agora
+
+- Leia primeiro o arquivo `core/settings.py` para entender a configuração do projeto.
+- Leia `core/urls.py` para ver quais rotas já existem.
+- Sempre teste localmente antes de subir sua branch.
+- Se criar um novo app, lembre de adicioná-lo ao `INSTALLED_APPS`.
+- Se algo não subir, confira primeiro o `.env`, o ambiente virtual e as migrations.
+
+## Problemas comuns
+
+### Erro de dependência
+
+Verifique se o ambiente virtual está ativado antes de rodar `pip install -r requirements.txt`.
+
+### Erro por falta de `.env`
+
+Confirme se o arquivo `.env` existe na raiz e se a variável `SECRET_KEY` foi preenchida.
+
+### Erro de banco
+
+Tente rodar novamente:
+
+```bash
+python manage.py migrate
+```
+
+## Próximos passos esperados para o projeto
+
+Alguns itens que ainda devem entrar conforme o projeto evoluir:
+
+- apps de negócio
+- models e serializers
+- views e endpoints próprios do sistema
+- testes automatizados
+- documentação mais detalhada da regra de negócio
+
+## Responsáveis
+
+- Daniel Costa
+- Equipe de desenvolvimento do SISPROM
