@@ -4,6 +4,19 @@ Backend da API do projeto SISPROM, construído com Django e Django REST Framewor
 
 Este repositório está no começo da estruturação. Hoje ele entrega a base do projeto, autenticação com JWT e configurações iniciais para a equipe desenvolver com mais segurança e padrão.
 
+## Como este projeto quer funcionar
+
+Queremos trabalhar neste repositório com mentalidade de projeto open source:
+
+- contribuição via `fork` como fluxo principal
+- mudanças pequenas e revisáveis
+- documentação clara para quem chega sem contexto previo
+- discussões e Pull Requests com contexto suficiente para review
+
+Se voce quer contribuir, comece por estes arquivos:
+
+- `README.md`
+
 ## Antes de começar
 
 Se você é novo no projeto, siga esta ordem:
@@ -268,7 +281,9 @@ python manage.py startapp nome_do_app
 
 ## Fluxo de trabalho com Git
 
-Para evitar conflito e bagunça no histórico:
+Para evitar conflito e bagunça no historico, trate o fluxo com `fork` como caminho padrao de contribuicao.
+
+### Fluxo principal de contribuição
 
 1. Atualize sua branch antes de começar.
 2. Crie uma branch para a sua tarefa.
@@ -276,7 +291,53 @@ Para evitar conflito e bagunça no histórico:
 4. Envie sua branch para o GitHub.
 5. Abra um Pull Request.
 
+### Quando usar fork
+
+Se voce nao tiver permissao para enviar branches direto para este repositorio, use o fluxo com `fork`.
+
+Resumo:
+
+1. Crie um `fork` do projeto no GitHub.
+2. Clone o seu `fork` para a sua maquina.
+3. Adicione o repositorio original como `upstream`.
+4. Crie sua branch de trabalho.
+5. Envie a branch para o seu `fork`.
+6. Abra o Pull Request do seu `fork` para o repositorio principal.
+
 Exemplo:
+
+```bash
+git clone https://github.com/SEU_USUARIO/sisprom.git
+cd sisprom
+git remote add upstream https://github.com/Nielssouza/sisprom.git
+git checkout main
+git pull upstream main
+git checkout -b feature/nome-da-tarefa
+```
+
+Depois de terminar sua tarefa:
+
+```bash
+git add .
+git commit -m "feat: adiciona endpoint de produtos"
+git push origin feature/nome-da-tarefa
+```
+
+Nesse fluxo:
+
+- `origin` e o seu `fork`
+- `upstream` e o repositorio principal do time
+
+Antes de iniciar uma nova tarefa, sincronize seu `main` local com o repositorio principal:
+
+```bash
+git checkout main
+git pull upstream main
+```
+
+### Fluxo alternativo para quem tem permissao de escrita
+
+Se voce tiver permissao para enviar branch direto para o repositorio principal, pode usar este fluxo:
 
 ```bash
 git checkout main
@@ -305,6 +366,155 @@ git push origin feature/nome-da-tarefa
 - `refactor:` refatoração sem alterar regra de negócio
 - `test:` testes
 - `chore:` ajustes de configuração, dependências ou manutenção
+
+## Contribuindo
+
+Para manter o projeto organizado, antes de abrir um PR:
+
+1. Leia este `README.md`.
+2. Garanta que a mudanca esta explicada de forma clara.
+3. Teste localmente tudo o que voce alterou.
+4. Avise no PR se existe alguma limitacao, pendencia ou escolha tecnica em aberto.
+
+Se a mudanca for grande, prefira quebrar em PRs menores.
+
+### Guia de contribuicao
+
+Este projeto quer funcionar com uma rotina parecida com a de projetos open source:
+
+- documentacao clara
+- mudancas pequenas
+- revisao por Pull Request
+- historico facil de entender
+
+Se for sua primeira contribuicao, comece por algo pequeno:
+
+- melhorar documentacao
+- corrigir texto ou exemplo
+- ajustar uma configuracao simples
+- criar uma pequena funcionalidade bem isolada
+
+### Fluxo recomendado
+
+O fluxo principal e via `fork`.
+
+1. Faca um `fork` do repositorio no GitHub.
+2. Clone o seu `fork`.
+3. Adicione o repositorio principal como `upstream`.
+4. Crie uma branch a partir da `main`.
+5. Faca sua alteracao.
+6. Teste localmente.
+7. Envie sua branch para o seu `fork`.
+8. Abra um Pull Request para a `main` do repositorio principal.
+
+Exemplo:
+
+```bash
+git clone https://github.com/SEU_USUARIO/sisprom.git
+cd sisprom
+git remote add upstream https://github.com/Nielssouza/sisprom.git
+git checkout main
+git pull upstream main
+git checkout -b feature/minha-alteracao
+```
+
+### Como manter seu fork atualizado
+
+Antes de comecar uma nova tarefa:
+
+```bash
+git checkout main
+git pull upstream main
+git push origin main
+```
+
+### Padrao para branches
+
+Use nomes curtos e descritivos:
+
+- `feature/nome-da-feature`
+- `fix/nome-do-bug`
+- `docs/nome-do-ajuste`
+- `refactor/nome-do-ajuste`
+
+### O que esperamos em um Pull Request
+
+Todo PR deve explicar:
+
+- o que foi alterado
+- por que a mudanca foi feita
+- como testar localmente
+- se existe algum ponto de atencao para review
+
+Se possivel, inclua:
+
+- prints, quando houver interface
+- exemplos de request/response, quando houver API
+- observacoes sobre limitacoes conhecidas
+
+### Checklist antes de abrir o PR
+
+- li este README
+- minha branch esta atualizada com a `main`
+- testei localmente o que alterei
+- revisei os arquivos modificados
+- escrevi uma descricao clara no PR
+
+### Boas praticas para contribuicao
+
+- Prefira PRs pequenos.
+- Nao misture refatoracao com funcionalidade nova sem necessidade.
+- Evite mudar varios assuntos diferentes no mesmo PR.
+- Atualize a documentacao quando a mudanca afetar onboarding, setup ou uso do projeto.
+- Se a mudanca for grande, abra uma discussao antes ou explique bem o contexto no PR.
+
+### Areas boas para primeira contribuicao
+
+Alguns exemplos de tarefas amigaveis para quem esta chegando:
+
+- melhorar o README
+- revisar mensagens e textos do projeto
+- criar estrutura inicial de apps
+- adicionar testes simples
+- padronizar exemplos de uso da API
+
+## Convivencia no projeto
+
+Queremos que o SISPROM seja um projeto acolhedor para quem esta aprendendo e tambem para quem ja tem experiencia.
+
+### Nosso compromisso
+
+Ao participar deste projeto, esperamos que todas as pessoas:
+
+- tratem as outras com respeito
+- deem feedback com clareza e boa fe
+- aceitem correcao tecnica sem ataques pessoais
+- ajudem a manter um ambiente seguro para perguntas e aprendizado
+
+### Comportamentos esperados
+
+- usar linguagem respeitosa
+- explicar decisoes tecnicas com contexto
+- assumir boa intencao nas interacoes
+- acolher contribuicoes de iniciantes
+- apontar problemas de forma objetiva
+
+### Comportamentos inaceitaveis
+
+- insultos ou ataques pessoais
+- humilhacao publica
+- discriminacao ou assedio
+- provocacao repetitiva sem objetivo construtivo
+- exposicao desnecessaria de erros de outra pessoa
+
+### Resolucao de conflitos
+
+Quando houver discordancia:
+
+1. Foque no problema tecnico.
+2. Explique a preocupacao com exemplos concretos.
+3. Proponha um caminho alternativo.
+4. Se necessario, pause a discussao e retome com mais contexto.
 
 ## Dicas para quem está chegando agora
 
@@ -345,3 +555,9 @@ Alguns itens que ainda devem entrar conforme o projeto evoluir:
 ## Responsáveis
 
 - Daniel Costa
+
+## Licenca
+
+Este repositorio ainda nao possui uma licenca definida.
+
+Antes de publicar o projeto formalmente como open source, vale escolher uma licenca com o time.
