@@ -1,6 +1,6 @@
 # SISPROM - API Backend
 
-API REST construída com **Django 6** + **Django REST Framework** + **JWT Authentication**.
+API REST construída com **Django 6** + **Django REST Framework**
 
 ## 🛠️ Stack
 
