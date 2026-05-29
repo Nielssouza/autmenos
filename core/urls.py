@@ -6,7 +6,7 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import TemplateView
+from django.views.generic import RedirectView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -14,39 +14,20 @@ from rest_framework_simplejwt.views import (
 )
 
 # Importando as views do app de cadastros para mapear as URLs
-from cadastros_guilherme.views import (
-    listar_clientes, 
-    novo_cliente, 
-    editar_cliente,
-    excluir_cliente
-)
+# (Agora usamos include para delegar ao app)
+# from cadastros_guilherme.views import (
+#     listar_clientes, 
+#     novo_cliente, 
+#     editar_cliente,
+#     excluir_cliente
+# )
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('', RedirectView.as_view(url='/clientes/', permanent=False), name='home'),
     path('admin/', admin.site.urls),
     
-    #Mostrando a view de listar clientes
-    path('admin/', admin.site.urls),
-    
-    #Mapear a URL para a view de listar clientes
-    path('clientes/', listar_clientes, name='listar_clientes'),
-    
-    #Mapear a URL para a view de criar cliente
-    path('clientes/novo/', novo_cliente, name='novo_cliente'),
-
-    #Mapear a URL para a view de editar cliente
-    path(
-        'clientes/<int:id>/editar/',
-        editar_cliente,
-        name='editar_cliente'
-    ),
-    
-    #Excluir cliente
-    path(
-        'clientes/<int:id>/excluir/',
-        excluir_cliente,
-        name='excluir_cliente'
-    ),
+    # Mapear a URL para o app de clientes usando include
+    path('clientes/', include('cadastro.urls', namespace='clientes')),
         
     # JWT Authentication
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
