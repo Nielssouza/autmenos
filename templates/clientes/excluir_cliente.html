@@ -1,0 +1,34 @@
+{% extends 'base.html' %} {% block content %}
+
+<h1>Excluir Cliente</h1>
+
+<div class="alert alert-danger">
+   Tem certeza que deseja excluir:
+
+   <strong> {{ cliente.nome }} </strong>?
+</div>
+
+<form method="POST">
+   {% csrf_token %}
+
+   <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+
+   <a href="/clientes/" class="btn btn-secondary"> Cancelar </a>
+</form>
+
+{% endblock %}
+
+<!--<h1>Excluir Cliente</h1>
+
+<p>
+   Tem certeza que deseja excluir o cliente <strong>{{ cliente.nome }}</strong>
+</p>
+
+<form method="POST">
+   {% csrf_token %}
+
+   <button type="submit">Confirmar Exclusão</button>
+</form>
+
+<a href="/clientes/">Cancelar</a>
+-->
