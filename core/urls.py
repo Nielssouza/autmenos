@@ -13,10 +13,41 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
+# Importando as views do app de cadastros para mapear as URLs
+from cadastros_guilherme.views import (
+    listar_clientes, 
+    novo_cliente, 
+    editar_cliente,
+    excluir_cliente
+)
+
 urlpatterns = [
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path('admin/', admin.site.urls),
+    
+    #Mostrando a view de listar clientes
+    path('admin/', admin.site.urls),
+    
+    #Mapear a URL para a view de listar clientes
+    path('clientes/', listar_clientes, name='listar_clientes'),
+    
+    #Mapear a URL para a view de criar cliente
+    path('clientes/novo/', novo_cliente, name='novo_cliente'),
 
+    #Mapear a URL para a view de editar cliente
+    path(
+        'clientes/<int:id>/editar/',
+        editar_cliente,
+        name='editar_cliente'
+    ),
+    
+    #Excluir cliente
+    path(
+        'clientes/<int:id>/excluir/',
+        excluir_cliente,
+        name='excluir_cliente'
+    ),
+        
     # JWT Authentication
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
@@ -24,4 +55,5 @@ urlpatterns = [
 
     # API browsable (login/logout para o browsable API do DRF)
     path('api-auth/', include('rest_framework.urls')),
+    
 ]

@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
-
-class CadastrosGuilhermeConfig(AppConfig):
-    name = 'Cadastros_Guilherme'
+#Configurando a aplicação clientes
+class cadastros_guilhermeConfig(AppConfig):
+    name = 'cadastros_guilherme'

@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    
+    # Local apps
+    'cadastros_guilherme',
 ]
 
 MIDDLEWARE = [
