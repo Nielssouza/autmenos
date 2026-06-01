@@ -1,101 +1,293 @@
 <!doctype html>
 <html lang="pt-br">
-   <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>AUTMENOS - Cadastro</title>
-      <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23111'/%3E%3Cpath d='M32 12L48 52H40.8L37.6 43.4H26.4L23.2 52H16L32 12ZM35.2 36.8L32 27.8L28.8 36.8H35.2Z' fill='white'/%3E%3Ccircle cx='47' cy='17' r='5' fill='%23f59e0b'/%3E%3C/svg%3E" />
-      <link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23111'/%3E%3Cpath d='M32 12L48 52H40.8L37.6 43.4H26.4L23.2 52H16L32 12ZM35.2 36.8L32 27.8L28.8 36.8H35.2Z' fill='white'/%3E%3Ccircle cx='47' cy='17' r='5' fill='%23f59e0b'/%3E%3C/svg%3E" />
-      <style>
-         * { margin: 0; padding: 0; box-sizing: border-box; }
-         body { background: #ffffff; color: #000000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUTMENOS - Cadastro</title>
 
-         .nav-bar { display: flex; justify-content: space-between; align-items: center; padding: 2rem 4rem; border-bottom: 1px solid #e8e8e8; }
-         .nav-brand { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: #000000; letter-spacing: -0.02em; }
-         .nav-links a { margin-left: 2.5rem; text-decoration: none; color: #333333; font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
-         .nav-links a:hover { color: #000000; }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-         .hero-section { min-height: calc(100vh - 74px); display: flex; align-items: center; justify-content: center; padding: 2rem; }
-         .form-card { width: 100%; max-width: 600px; border: 1px solid #000000; border-radius: 8px; padding: 2.5rem; }
-         .form-card h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
-         .form-card p { color: #666666; margin-bottom: 2rem; }
+        body {
+            background: #ffffff;
+            color: #000000;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-         .full-width { grid-column: span 2; }
-         .form-field label { display: block; font-weight: 600; margin-bottom: 0.4rem; font-size: 0.9rem; }
-         .form-field input { width: 100%; padding: 0.75rem 1rem; border: 1px solid #d8d8d8; border-radius: 4px; font-size: 1rem; transition: border-color 0.3s; }
-         .form-field input:focus { outline: none; border-color: #000000; }
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid #ddd;
+        }
 
-         .btn-submit { width: 100%; padding: 1rem; background: #000000; color: #ffffff; border: 2px solid #000000; border-radius: 4px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-top: 1.5rem; }
-         .btn-submit:hover { background: #ffffff; color: #000000; }
+        .nav-brand {
+            text-decoration: none;
+            color: #000;
+            font-size: 24px;
+            font-weight: bold;
+        }
 
-         .alert-success { background: #f0fff0; border: 1px solid #2e7d32; color: #2e7d32; padding: 0.75rem; border-radius: 4px; margin-bottom: 1.5rem; }
-         .back-link { display: inline-block; margin-top: 1.5rem; text-decoration: none; color: #666666; font-weight: 500; }
-         .back-link:hover { color: #000000; }
+        .nav-links a {
+            text-decoration: none;
+            color: #000;
+        }
 
-         {# extra_css #}
-         @media (max-width: 768px) {
-            .nav-bar { padding: 1.5rem; flex-direction: column; gap: 1rem; }
-            .nav-links a { margin-left: 0; margin-right: 1.5rem; }
-            .form-grid { grid-template-columns: 1fr; }
-            .full-width { grid-column: span 1; }
-         }
-      </style>
-   </head>
-   <body>
-      <nav class="nav-bar">
-         <a href="/" class="nav-brand">AUTMENOS</a>
-         <div class="nav-links">
-            <a href="/">Início</a>
-         </div>
-      </nav>
+        .hero-section {
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
 
-      <section class="hero-section">
-         <div class="form-card">
-            <h1>Faça seu Cadastro</h1>
-            <p>Preencha o formulário abaixo para se registrar.</p>
+        .form-card {
+            width: 100%;
+            max-width: 800px;
+            border: 1px solid #000;
+            padding: 30px;
+            border-radius: 8px;
+        }
 
-            {% if messages %}
-               {% for message in messages %}
-               {% if message.tags == 'success' %}
-               <div class="alert-success">{{ message }}</div>
-               {% endif %}
-               {% endfor %}
-            {% endif %}
+        .form-card h1 {
+            margin-bottom: 10px;
+        }
 
-            <form method="post">
-               {% csrf_token %}
-               <div class="form-grid">
-                  <div class="form-field">
-                     <label for="id_nome">Nome</label>
-                     {{ form.nome }}
-                  </div>
-                  <div class="form-field">
-                     <label for="id_cpf">CPF</label>
-                     {{ form.cpf }}
-                  </div>
-                  <div class="form-field">
-                     <label for="id_email">Email</label>
-                     {{ form.email }}
-                  </div>
-                  <div class="form-field">
-                     <label for="id_telefone">Telefone</label>
-                     {{ form.telefone }}
-                  </div>
-                  <div class="form-field full-width">
-                     <label for="id_endereco">Endereço</label>
-                     {{ form.endereco }}
-                  </div>
-                  <div class="form-field">
-                     <label for="id_data_nascimento">Data de Nascimento</label>
-                     {{ form.data_nascimento }}
-                  </div>
-               </div>
-               <button type="submit" class="btn-submit">Enviar Cadastro</button>
-            </form>
+        .form-card p {
+            margin-bottom: 20px;
+            color: #555;
+        }
 
-            <a href="/" class="back-link">&larr; Voltar ao início</a>
-         </div>
-      </section>
-   </body>
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-field label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-field input,
+        .form-field select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            margin-top: 25px;
+            padding: 12px;
+            border: none;
+            background: #000;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .btn-submit:hover {
+            background: #333;
+        }
+
+        .alert-success {
+            background: #e8ffe8;
+            border: 1px solid green;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #000;
+        }
+
+        #campo-cpf,
+        #campo-cnpj {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+
+            .nav-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="nav-bar">
+    <a href="/" class="nav-brand">AUTMENOS</a>
+
+    <div class="nav-links">
+        <a href="/">Início</a>
+    </div>
+</nav>
+
+<section class="hero-section">
+
+    <div class="form-card">
+
+        <h1>Cadastro de Clientes e Fornecedores</h1>
+
+        <p>
+            Preencha os dados abaixo.
+        </p>
+
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    <div class="alert-success">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% if form.errors %}
+<div style="
+    background:#ffeaea;
+    border:1px solid #ff4d4d;
+    color:#cc0000;
+    padding:10px;
+    margin-bottom:15px;
+    border-radius:4px;
+">
+    {{ form.errors }}
+</div>
+{% endif %}
+
+<form method="post">
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div class="form-grid">
+
+                <div class="form-field">
+                    <label>Tipo de Cadastro</label>
+                    {{ form.tipo_cadastro }}
+                </div>
+
+                <div class="form-field">
+                    <label>Tipo de Pessoa</label>
+                    {{ form.tipo_pessoa }}
+                </div>
+
+                <div class="form-field full-width">
+                    <label>Nome / Razão Social</label>
+                    {{ form.nome }}
+                </div>
+
+                <div class="form-field" id="campo-cpf">
+                    <label>CPF</label>
+                    {{ form.cpf }}
+                </div>
+
+                <div class="form-field" id="campo-cnpj">
+                    <label>CNPJ</label>
+                    {{ form.cnpj }}
+                </div>
+
+                <div class="form-field">
+                    <label>Email</label>
+                    {{ form.email }}
+                </div>
+
+                <div class="form-field">
+                    <label>Telefone</label>
+                    {{ form.telefone }}
+                </div>
+
+                <div class="form-field full-width">
+                    <label>Endereço</label>
+                    {{ form.endereco }}
+                </div>
+
+                <div class="form-field">
+                    <label>Data de Nascimento</label>
+                    {{ form.data_nascimento }}
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn-submit">
+                Salvar Cadastro
+            </button>
+
+        </form>
+
+        <a href="/" class="back-link">
+            ← Voltar ao início
+        </a>
+
+    </div>
+
+</section>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const tipoPessoa = document.getElementById('id_tipo_pessoa');
+    const campoCpf = document.getElementById('campo-cpf');
+    const campoCnpj = document.getElementById('campo-cnpj');
+
+    function atualizarCampos() {
+
+        if (tipoPessoa.value === 'PF') {
+
+            campoCpf.style.display = 'flex';
+            campoCnpj.style.display = 'none';
+
+        } else if (tipoPessoa.value === 'PJ') {
+
+            campoCpf.style.display = 'none';
+            campoCnpj.style.display = 'flex';
+
+        } else {
+
+            campoCpf.style.display = 'none';
+            campoCnpj.style.display = 'none';
+
+        }
+    }
+
+    atualizarCampos();
+
+    tipoPessoa.addEventListener('change', atualizarCampos);
+
+});
+
+</script>
+
+</body>
 </html>
