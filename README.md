@@ -1,4 +1,4 @@
-# SISPROM
+# AUTMENOS
 
 Backend da API do projeto SISPROM, construído com Django e Django REST Framework.
 
