@@ -6,7 +6,7 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import RedirectView
+from django.views.generic import TemplateView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -23,11 +23,11 @@ from rest_framework_simplejwt.views import (
 # )
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='/clientes/', permanent=False), name='home'),
+    path('', TemplateView.as_view(template_name='landing.html'), name='home'),
     path('admin/', admin.site.urls),
     
-    # Mapear a URL para o app de clientes usando include
-    path('clientes/', include('cadastro.urls', namespace='clientes')),
+    # Mapear a URL para o app de cadastro usando include
+    path('cadastro/', include('cadastro.urls', namespace='cadastro')),
         
     # JWT Authentication
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

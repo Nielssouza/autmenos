@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="pt-br">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>AUTMENOS</title>
+      <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23111'/%3E%3Cpath d='M32 12L48 52H40.8L37.6 43.4H26.4L23.2 52H16L32 12ZM35.2 36.8L32 27.8L28.8 36.8H35.2Z' fill='white'/%3E%3Ccircle cx='47' cy='17' r='5' fill='%23f59e0b'/%3E%3C/svg%3E" />
+      <link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23111'/%3E%3Cpath d='M32 12L48 52H40.8L37.6 43.4H26.4L23.2 52H16L32 12ZM35.2 36.8L32 27.8L28.8 36.8H35.2Z' fill='white'/%3E%3Ccircle cx='47' cy='17' r='5' fill='%23f59e0b'/%3E%3C/svg%3E" />
+      <style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .landing-hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: #ffffff;
+    color: #000000;
+    padding: 2rem;
+  }
+
+  .landing-hero h1 {
+    font-size: 4rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+  }
+
+  .landing-hero p {
+    font-size: 1.25rem;
+    color: #333333;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+  }
+
+  .btn-primary-custom {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    background: #000000;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    border: 2px solid #000000;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary-custom:hover {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  .btn-secondary-custom {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    background: transparent;
+    color: #000000;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    border: 2px solid #000000;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    margin-left: 1rem;
+  }
+
+  .btn-secondary-custom:hover {
+    background: #000000;
+    color: #ffffff;
+  }
+
+  .features-section {
+    padding: 6rem 2rem;
+    background: #ffffff;
+    border-top: 1px solid #000000;
+  }
+
+  .features-section h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 4rem;
+    color: #000000;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .feature-card {
+    padding: 2rem;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .feature-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #000000;
+  }
+
+  .feature-card p {
+    color: #333333;
+    line-height: 1.6;
+  }
+
+  .cta-section {
+    padding: 6rem 2rem;
+    text-align: center;
+    background: #000000;
+    color: #ffffff;
+  }
+
+  .cta-section h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-section p {
+    font-size: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    color: #cccccc;
+    line-height: 1.6;
+  }
+
+  .btn-cta {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    background: #ffffff;
+    color: #000000;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-cta:hover {
+    background: #cccccc;
+  }
+
+  @media (max-width: 768px) {
+    .landing-hero h1 {
+      font-size: 2.5rem;
+    }
+
+    .btn-primary-custom,
+    .btn-secondary-custom {
+      display: block;
+      margin: 0.5rem auto;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<!-- Hero Section -->
+<section class="landing-hero">
+  <div>
+    <h1>Bem-vindo ao AUTMENOS</h1>
+    <p>Sistema completo para gestão de promoções e cadastros. Simplifique seus processos e aumente sua produtividade com nossa plataforma intuitiva e eficiente.</p>
+    <div>
+      <a href="/cadastro/" class="btn-primary-custom">Fazer Cadastro</a>
+      <a href="#features" class="btn-secondary-custom">Saiba Mais</a>
+      <a href="{% url 'cadastro:login' %}" class="btn-secondary-custom">Login</a>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="features-section">
+  <h2>Recursos Principais</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">&#9776;</div>
+      <h3>Gestão de Cadastros</h3>
+      <p>Gerencie todos os seus cadastros de forma centralizada e eficiente. Acesse, edite e organise informações com facilidade.</p>
+      <a href="/cadastro/" class="btn-secondary-custom" style="margin-top: 1rem; display: inline-block; padding: 0.5rem 1rem; font-size: 0.9rem;">Cadastrar-se</a>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">&#9881;</div>
+      <h3>Automação de Processos</h3>
+      <p>Automatize tarefas repetitivas e economize tempo. Configure fluxos de trabalho personalizados para sua equipe.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">&#128202;</div>
+      <h3>Relatórios Detalhados</h3>
+            <p>Gere relatórios completos com dados em tempo real. Tome decisões baseadas em análises precisas e atualizadas.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <h2>Pronto para começar?</h2>
+  <p>Junte-se ao AUTMENOS e transforme a maneira como você gerencia suas promoções e cadastros.</p>
+  {% if user.is_authenticated and user.is_staff %}
+  <a href="{% url 'cadastro:admin' %}" class="btn-cta">Administração</a>
+  {% else %}
+  <a href="{% url 'cadastro:publico' %}" class="btn-cta">Fazer Cadastro</a>
+  {% endif %}
+  </section>
+</html>
