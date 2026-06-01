@@ -77,8 +77,6 @@
       <nav class="nav-bar">
          <a href="/" class="nav-brand">AUTMENOS</a>
          <div class="nav-links">
-            <a href="/">Início</a>
-            <a href="{% url 'cadastro:admin' %}">Administração</a>
             <span class="user-info">{{ request.user.get_username }}</span>
             <a href="{% url 'cadastro:logout' %}" class="btn-logout">Sair</a>
          </div>
