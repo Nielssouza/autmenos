@@ -1,0 +1,182 @@
+<!-- templates/base.html -->
+
+<!doctype html>
+<html lang="pt-br">
+   <head>
+      <meta charset="UTF-8" />
+      <title>{% block title %}AUTMENOS{% endblock %}</title>
+
+      <style>
+         * {
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+         }
+
+         body {
+            margin: 0;
+            background-color: #fff;
+            color: #000;
+         }
+
+         header {
+            height: 70px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+         }
+
+         header h2 {
+            margin: 0;
+            font-size: 24px;
+         }
+
+         header a {
+            text-decoration: none;
+            color: #000;
+            font-size: 16px;
+         }
+
+         main {
+            padding: 40px 20px;
+         }
+
+         .container {
+            width: 95%;
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #000;
+            border-radius: 8px;
+            padding: 30px;
+         }
+
+         h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+         }
+
+         .descricao {
+            margin-bottom: 25px;
+            color: #333;
+         }
+
+         form label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 6px;
+         }
+
+         form input,
+         form select,
+         form textarea {
+            width: 100%;
+            height: 38px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 15px;
+         }
+
+         .linha {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+         }
+
+         button,
+         .btn {
+            width: 100%;
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+            margin-top: 10px;
+         }
+
+         .voltar {
+            display: inline-block;
+            margin-top: 20px;
+            color: #000;
+            text-decoration: none;
+         }
+
+         table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+         }
+
+         th {
+            background: #000;
+            color: #fff;
+            padding: 12px;
+            text-align: left;
+         }
+
+         td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+         }
+
+         .acoes {
+            display: flex;
+            gap: 8px;
+         }
+
+         .btn-editar {
+            background: #0f0f0f;
+            color: white;
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+         }
+
+         .btn-excluir {
+            background: #6c0510;
+            color: white;
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+         }
+
+         .btn-editar:hover,
+         .btn-excluir:hover {
+            opacity: 0.9;
+         }
+
+         .tabela-responsiva {
+            width: 100%;
+            overflow-x: auto;
+         }
+
+         .tabela-responsiva table {
+            width: 100%;
+         }
+
+         .acoes {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+         }
+      </style>
+   </head>
+
+   <body>
+      <header>
+         <h2>AUTMENOS</h2>
+         <a href="/">Início</a>
+      </header>
+
+      <main>
+         <div class="container">{% block content %} {% endblock %}</div>
+      </main>
+   </body>
+</html>

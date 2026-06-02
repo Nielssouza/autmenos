@@ -4,84 +4,87 @@
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>Lista de Produtos</title>
-      
    </head>
-   
+
    <body>
       <h1>Produtos</h1>
       <!doctype html>
-<html lang="pt-br">
-   <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Lista de Produtos</title>
-      
-   </head>
+      <html lang="pt-br">
+         <head>
+            <meta charset="UTF-8" />
+            <meta
+               name="viewport"
+               content="width=device-width, initial-scale=1.0"
+            />
+            <title>Lista de Produtos</title>
+         </head>
 
-   <body>
-      <h1>Produtos</h1>
+         <body>
+            {% extends 'produtos/base.html' %} {% block title %} Lista de
+            Produtos {% endblock %} {% block content %}
 
-      {% if messages %} 
-         {% for message in messages %}
-         <p style="color: green">
-            {{ message }}
-         </p>
-         {% endfor %} 
-      {% endif %}
+            <h1>Produtos</h1>
 
-      <a href="{% url 'produtos:produto_novo' %}">Novo Produto</a>
+            <a href="{% url 'produtos:produto_novo' %}" class="btn">
+               Novo Produto
+            </a>
 
-      <table border="1" cellpadding="5">
-         <tr>
-            <th>Código</th>
-            <th>Descrição</th>
-            <th>Grupo</th>
-            <th>Marca</th>
-            <th>Valor de Venda</th>
-            <th>Estoque</th>
-            <th>Ações</th>
-         </tr>
+            <div class="" tabela-responsiva>
+               <table>
+                  <thead>
+                     <tr>
+                        <th>Código</th>
+                        <th>Descrição</th>
+                        <th>Grupo</th>
+                        <th>Marca</th>
+                        <th>Valor de Venda</th>
+                        <th>Estoque</th>
+                        <th>Ações</th>
+                     </tr>
+                  </thead>
 
-      <a href="{% url 'produtos:produto_novo' %}">Novo Produto</a>
+                  <tbody>
+                     {% for produto in produtos %}
+                     <tr>
+                        <td>{{ produto.codigo }}</td>
+                        <td>{{ produto.descricao }}</td>
+                        <td>{{ produto.grupo }}</td>
+                        <td>{{ produto.marca }}</td>
+                        <td>R$ {{ produto.valor_venda }}</td>
+                        <td>{{ produto.estoque }}</td>
+                        <td>
+                           <div class="acoes">
+                              <a
+                                 href="{% url 'produtos:produto_editar' produto.id %}"
+                                 class="btn-editar"
+                              >
+                                 Editar
+                              </a>
 
-      <table border="1" cellpadding="5">
-         <tr>
-            <th>Código</th>
-            <th>Descrição</th>
-            <th>Grupo</th>
-            <th>Marca</th>
-            <th>Valor de Venda</th>
-            <th>Estoque</th>
-            <th>Ações</th>
-         </tr>
-
-         {% for produto in produtos %}
-         <tr>
-            <td>{{ produto.codigo }}</td>
-            <td>{{ produto.descricao }}</td>
-            <td>{{ produto.grupo }}</td>
-            <td>{{ produto.marca }}</td>
-            <td>{{ produto.valor_venda }}</td>
-            <td>{{ produto.estoque }}</td>
-
-            <td>
-               <!--Link para editar o produto-->
-               <a href="{% url 'produtos:produto_editar' produto.id %}">
-                  Editar
-               </a>
-
-               <!--Link para excluir o produto-->
-               <a
-                  href="{% url 'produtos:produto_excluir' produto.id %}"
-                  onclick="
-                     return confirm('Deseja realmente excluir este produto?');
-                  "
-               >
-                  Excluir
-               </a>
-            </td>
-         </tr>
-         {% endfor %}
-      </table>
+                              <a
+                                 href="{% url 'produtos:produto_excluir' produto.id %}"
+                                 class="btn-excluir"
+                                 onclick="
+                                    return confirm(
+                                       'Deseja realmente excluir este produto?',
+                                    );
+                                 "
+                              >
+                                 Excluir
+                              </a>
+                           </div>
+                        </td>
+                     </tr>
+                     {% empty %}
+                     <tr>
+                        <td colspan="7">Nenhum produto cadastrado.</td>
+                     </tr>
+                     {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+            {% endblock %}
+         </body>
+      </html>
    </body>
 </html>
