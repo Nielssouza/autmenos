@@ -99,6 +99,12 @@
             margin-top: 10px;
          }
 
+         .btn:hover {
+            background: #4f4f4f;
+            transform: translateY(-1px);
+            transition: all 0.3s ease;
+         }
+
          .voltar {
             display: inline-block;
             margin-top: 20px;
@@ -124,34 +130,6 @@
             border-bottom: 1px solid #ddd;
          }
 
-         .acoes {
-            display: flex;
-            gap: 8px;
-         }
-
-         .btn-editar {
-            background: #0f0f0f;
-            color: white;
-            padding: 6px 12px;
-            text-decoration: none;
-            border-radius: 4px;
-            font-size: 14px;
-         }
-
-         .btn-excluir {
-            background: #6c0510;
-            color: white;
-            padding: 6px 12px;
-            text-decoration: none;
-            border-radius: 4px;
-            font-size: 14px;
-         }
-
-         .btn-editar:hover,
-         .btn-excluir:hover {
-            opacity: 0.9;
-         }
-
          .tabela-responsiva {
             width: 100%;
             overflow-x: auto;
@@ -159,12 +137,38 @@
 
          .tabela-responsiva table {
             width: 100%;
+            min-width: 720px;
          }
 
          .acoes {
             display: flex;
-            gap: 5px;
+            gap: 6px;
             justify-content: center;
+            align-items: center;
+            white-space: nowrap;
+         }
+
+         .btn-editar,
+         .btn-excluir {
+            color: white;
+            padding: 6px 10px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 12px;
+            display: inline-block;
+         }
+
+         .btn-editar {
+            background: #0f0f0f;
+         }
+
+         .btn-excluir {
+            background: #6c0510;
+         }
+
+         .btn-editar:hover,
+         .btn-excluir:hover {
+            opacity: 0.9;
          }
       </style>
    </head>

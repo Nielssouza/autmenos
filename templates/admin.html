@@ -322,6 +322,7 @@
       <nav class="nav-bar">
          <a href="/" class="nav-brand">AUTMENOS</a>
          <div class="nav-links">
+            <a href="{% url 'produtos:produto_lista' %}">Produtos</a>
             <span class="user-info">{{ request.user.get_username }}</span>
             <a href="{% url 'cadastro:logout' %}" class="btn-logout">Sair</a>
          </div>
