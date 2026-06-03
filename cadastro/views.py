@@ -64,43 +64,12 @@ def cadastro_admin(request):
     if request.method == 'POST':
 
         if 'delete' in request.POST:
-
-            cadastro = get_object_or_404(
-                Cadastro,
-                id=int(request.POST['cliente_id'])
-            )
-
-            cadastro.delete()
-
+            ...
             return redirect('cadastro:admin')
 
         elif 'update' in request.POST:
-
-            cadastro = get_object_or_404(
-                Cadastro,
-                id=int(request.POST['cliente_id'])
-            )
-
-            form = ClienteForm(
-                request.POST,
-                instance=cadastro
-            )
-
-            if form.is_valid():
-                form.save()
-                return redirect('cadastro:admin')
-
-            cadastros = Cadastro.objects.all()
-
-            return render(
-                request,
-                'admin.html',
-                {
-                    'cadastros': cadastros,
-                    'form': form,
-                    'cadastro_editando': cadastro,
-                }
-            )
+            ...
+            return render(...)
 
         else:
 
@@ -122,8 +91,23 @@ def cadastro_admin(request):
                 }
             )
 
+    # FORA DO POST, MAS DENTRO DA FUNÇÃO
     form = ClienteForm()
     cadastros = Cadastro.objects.all()
+
+    total_cadastros = Cadastro.objects.count()
+
+    total_clientes = Cadastro.objects.filter(
+        tipo_cadastro='CLIENTE'
+    ).count()
+
+    total_fornecedores = Cadastro.objects.filter(
+        tipo_cadastro='FORNECEDOR'
+    ).count()
+
+    total_funcionarios = Cadastro.objects.filter(
+        tipo_cadastro='FUNCIONARIO'
+    ).count()
 
     return render(
         request,
@@ -132,5 +116,10 @@ def cadastro_admin(request):
             'cadastros': cadastros,
             'form': form,
             'cadastro_editando': None,
+
+            'total_cadastros': total_cadastros,
+            'total_clientes': total_clientes,
+            'total_fornecedores': total_fornecedores,
+            'total_funcionarios': total_funcionarios,
         }
     )

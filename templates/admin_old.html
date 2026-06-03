@@ -1,0 +1,221 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+<script src="{% static 'js/admin.js' %}"></script>
+
+<!doctype html>
+<html lang="pt-br">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>AUTMENOS - Administração</title>
+      <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23111'/%3E%3Cpath d='M32 12L48 52H40.8L37.6 43.4H26.4L23.2 52H16L32 12ZM35.2 36.8L32 27.8L28.8 36.8H35.2Z' fill='white'/%3E%3Ccircle cx='47' cy='17' r='5' fill='%23f59e0b'/%3E%3C/svg%3E" />
+      <link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23111'/%3E%3Cpath d='M32 12L48 52H40.8L37.6 43.4H26.4L23.2 52H16L32 12ZM35.2 36.8L32 27.8L28.8 36.8H35.2Z' fill='white'/%3E%3Ccircle cx='47' cy='17' r='5' fill='%23f59e0b'/%3E%3C/svg%3E" />
+      <style>
+         * { margin: 0; padding: 0; box-sizing: border-box; }
+         body { background: #ffffff; color: #000000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+         .nav-bar { display: flex; justify-content: space-between; align-items: center; padding: 2rem 4rem; border-bottom: 1px solid #e8e8e8; }
+         .nav-brand { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: #000000; letter-spacing: -0.02em; }
+         .nav-links a { text-decoration: none; color: #333333; font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
+         .nav-links a:hover { color: #000000; }
+         .user-info { margin-left: 2.5rem; color: #999; font-weight: 500; font-size: 0.95rem; }
+         .btn-logout { margin-left: 1.5rem; color: #d32f2f; }
+
+         .page-section { padding: 4rem; max-width: 1200px; margin: 0 auto; }
+         .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; }
+         .page-header h1 { font-size: 3rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
+
+         .btn-primary-custom { display: inline-block; padding: 1rem 2.5rem; background: #000000; color: #ffffff; text-decoration: none; font-weight: 600; font-size: 1rem; border: 2px solid #000000; border-radius: 4px; transition: all 0.3s; cursor: pointer; }
+         .btn-primary-custom:hover { background: #ffffff; color: #000000; }
+         .btn-secondary-custom { display: inline-block; padding: 0.5rem 1.2rem; background: transparent; color: #000000; text-decoration: none; font-weight: 600; font-size: 0.9rem; border: 2px solid #000000; border-radius: 4px; transition: all 0.3s; cursor: pointer; }
+         .btn-secondary-custom:hover { background: #000000; color: #ffffff; }
+         .btn-danger-custom { display: inline-block; padding: 0.5rem 1.2rem; background: #ffffff; color: #000000; font-weight: 600; font-size: 0.9rem; border: 2px solid #d32f2f; border-radius: 4px; cursor: pointer; transition: all 0.3s; }
+         .btn-danger-custom:hover { background: #d32f2f; color: #ffffff; }
+
+         .search-bar { margin-bottom: 2rem; padding: 0.85rem 1.2rem; width: 100%; border: 2px solid #e8e8e8; border-radius: 4px; font-size: 1rem; transition: border-color 0.3s; outline: none; }
+         .search-bar:focus { border-color: #000000; }
+
+         .clients-table { width: 100%; border-collapse: collapse; }
+         .clients-table thead th { padding: 1rem; border-bottom: 2px solid #000000; text-align: left; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: #666666; }
+         .clients-table tbody td { padding: 1rem; border-bottom: 1px solid #e8e8e8; vertical-align: middle; }
+         .clients-table tbody tr { transition: background 0.2s; }
+         .clients-table tbody tr:hover { background: #fafafa; }
+
+         .empty-state { text-align: center; padding: 4rem 2rem; color: #999999; }
+         .empty-state h3 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; color: #666666; }
+         .count-badge { display: inline-block; background: #f0f0f0; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.85rem; font-weight: 600; margin-left: 1rem; }
+
+         /* Form modal */
+         .form-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 100; align-items: center; justify-content: center; }
+         .form-overlay.active { display: flex; }
+         .form-panel { background: #ffffff; width: 100%; max-width: 700px; max-height: 90vh; overflow-y: auto; padding: 2.5rem; border-radius: 8px; }
+         .form-panel h2 { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 2rem; }
+         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+         .form-grid .full-width { grid-column: span 2; }
+         .form-field label { display: block; font-weight: 600; margin-bottom: 0.4rem; font-size: 0.9rem; }
+         .form-field input { width: 100%; padding: 0.75rem 1rem; border: 1px solid #d8d8d8; border-radius: 4px; font-size: 1rem; transition: border-color 0.3s; }
+         .form-field input:focus { outline: none; border-color: #000000; }
+         .form-actions { display: flex; gap: 1rem; margin-top: 2rem; }
+
+         /* Delete confirm modal */
+         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 200; align-items: center; justify-content: center; }
+         .modal-overlay.active { display: flex; }
+         .modal-box { background: #ffffff; padding: 2.5rem; border-radius: 8px; max-width: 450px; text-align: center; }
+         .modal-box h2 { font-size: 1.75rem; font-weight: 800; margin-bottom: 1rem; }
+         .modal-box p { color: #666666; margin-bottom: 2rem; line-height: 1.6; }
+         .modal-actions { display: flex; gap: 1rem; justify-content: center; }
+
+         @media (max-width: 768px) {
+            .nav-bar { padding: 1.5rem; flex-direction: column; gap: 1rem; }
+            .nav-links a { margin-left: 0; margin-right: 1.5rem; }
+            .page-section { padding: 2rem; }
+            .page-header h1 { font-size: 2rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-grid .full-width { grid-column: span 1; }
+            .clients-table { font-size: 0.8rem; }
+            .clients-table thead th, .clients-table tbody td { padding: 0.6rem 0.4rem; }
+         }
+      </style>
+   </head>
+   <body>
+      <nav class="nav-bar">
+         <a href="/" class="nav-brand">AUTMENOS</a>
+         <div class="nav-links">
+            <span class="user-info">{{ request.user.get_username }}</span>
+            <a href="{% url 'cadastro:logout' %}" class="btn-logout">Sair</a>
+         </div>
+      </nav>
+
+      <section class="page-section">
+         <div class="page-header">
+            <h1>
+               Administração
+               {% if clientes %}
+               <span class="count-badge">{{ clientes|length }}</span>
+               {% endif %}
+            </h1>
+         </div>
+
+         {% if clientes %}
+         <input type="text" class="search-bar" placeholder="Buscar cadastro..." oninput="filterTable(this.value)" />
+         {% endif %}
+
+         {% if clientes %}
+         <table class="clients-table" id="clientsTable">
+            <thead>
+               <tr>
+                  <th>Nome</th>
+                  <th>Email</th>
+                  <th>Telefone</th>
+                  <th>CPF</th>
+                  <th>Nascimento</th>
+                  <th>Ações</th>
+               </tr>
+            </thead>
+            <tbody>
+               {% for cliente in clientes %}
+               <tr>
+                  <td><strong>{{ cliente.nome }}</strong></td>
+                  <td>{{ cliente.email }}</td>
+                  <td>{{ cliente.telefone }}</td>
+                  <td>{{ cliente.cpf }}</td>
+                  <td>{{ cliente.data_nascimento|date:'d/m/Y' }}</td>
+                  <td>
+                     <button class="btn-secondary-custom" onclick="openForm('editar', '{{ cliente.id }}', '{{ cliente.nome }}', '{{ cliente.email }}', '{{ cliente.telefone }}', '{{ cliente.endereco }}', '{{ cliente.data_nascimento|date:'Y-m-d' }}', '{{ cliente.cpf }}')">Editar</button>
+                     <button class="btn-danger-custom" onclick="openDeleteModal('{{ cliente.id }}', '{{ cliente.nome }}')">Excluir</button>
+                  </td>
+               </tr>
+               {% endfor %}
+            </tbody>
+         </table>
+         {% else %}
+         <div class="empty-state">
+            <h3>Nenhum cadastro</h3>
+         </div>
+         {% endif %}
+      </section>
+
+      <!-- Edit Form Modal -->
+      <div class="form-overlay" id="formOverlay">
+         <div class="form-panel">
+            <h2 id="formTitle">Editar Cadastro</h2>
+            <form method="post" id="clientForm">
+               {% csrf_token %}
+               <input type="hidden" name="cliente_id" id="formClientId" />
+               <input type="hidden" name="update" value="1" />
+
+               <div class="form-grid">
+                  <div class="form-field">
+                     <label for="id_nome">Nome</label>
+                     <input type="text" name="nome" id="id_nome" required />
+                  </div>
+                  <div class="form-field">
+                     <label for="id_cpf">CPF</label>
+                     <input type="text" name="cpf" id="id_cpf" required />
+                  </div>
+                  <div class="form-field">
+                     <label for="id_email">Email</label>
+                     <input type="email" name="email" id="id_email" />
+                  </div>
+                  <div class="form-field">
+                     <label for="id_telefone">Telefone</label>
+                     <input type="text" name="telefone" id="id_telefone" />
+                  </div>
+                  <div class="form-field full-width">
+                     <label for="id_endereco">Endereço</label>
+                     <input type="text" name="endereco" id="id_endereco" />
+                  </div>
+                  <div class="form-field">
+                     <label for="id_data_nascimento">Data de Nascimento</label>
+                     <input type="date" name="data_nascimento" id="id_data_nascimento" />
+                  </div>
+               </div>
+
+               <div class="form-actions">
+                  <button type="submit" class="btn-primary-custom" style="padding: 0.75rem 2rem;">Atualizar</button>
+                  <button type="button" class="btn-secondary-custom" onclick="closeForm()">Cancelar</button>
+               </div>
+            </form>
+         </div>
+      </div>
+
+      <!-- Delete Confirmation Modal -->
+      <div class="modal-overlay" id="deleteOverlay">
+         <div class="modal-box">
+            <h2>Excluir Cadastro</h2>
+            <p>Tem certeza que deseja excluir <strong id="deleteClientName"></strong>?</p>
+            <form method="post" id="deleteForm">
+               {% csrf_token %}
+               <input type="hidden" name="cliente_id" id="deleteClientId" />
+               <input type="hidden" name="delete" value="1" />
+               <div class="modal-actions">
+                  <button type="submit" class="btn-danger-custom" style="padding: 1rem 2rem; font-size: 1rem;">Confirmar</button>
+                  <button type="button" class="btn-secondary-custom" onclick="closeDeleteModal()">Cancelar</button>
+               </div>
+            </form>
+         </div>
+      </div>
+
+      <script>
+         function openForm(mode, id, nome, email, telefone, endereco, nascimento, cpf) {
+            const overlay = document.getElementById('formOverlay');
+            overlay.classList.add('active');
+            document.getElementById('formClientId').value = id;
+            document.getElementById('id_nome').value = nome || '';
+            document.getElementById('id_email').value = email || '';
+            document.getElementById('id_telefone').value = telefone || '';
+            document.getElementById('id_endereco').value = endereco || '';
+            document.getElementById('id_data_nascimento').value = nascimento || '';
+            document.getElementById('id_cpf').value = cpf || '';
+         }
+
+         function closeForm() { document.getElementById('formOverlay').classList.remove('active'); }
+         function openDeleteModal(id, name) { document.getElementById('deleteOverlay').classList.add('active'); document.getElementById('deleteClientId').value = id; document.getElementById('deleteClientName').textContent = name; }
+         function closeDeleteModal() { document.getElementById('deleteOverlay').classList.remove('active'); }
+         function filterTable(query) { const rows = document.querySelectorAll('#clientsTable tbody tr'); query = query.toLowerCase(); rows.forEach(row => { row.style.display = row.textContent.toLowerCase().includes(query) ? '' : 'none'; }); }
+         document.getElementById('formOverlay').onclick = function(e) { if (e.target === this) closeForm(); };
+         document.getElementById('deleteOverlay').onclick = function(e) { if (e.target === this) closeDeleteModal(); };
+      </script>
+   </body>
+</html>

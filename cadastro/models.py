@@ -104,4 +104,4 @@ class Cadastro(models.Model):
     )
 
     def __str__(self):
-        return self.nome
+        return self.nome or self.razao_social or f"Cadastro {self.id}"
