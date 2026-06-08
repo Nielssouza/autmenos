@@ -316,6 +316,74 @@
                padding: 0.6rem 0.4rem;
             }
          }
+
+         /* Css da Help page */
+         .help-page {
+            max-width: 900px;
+            margin: 0 auto;
+         }
+
+         .help-page h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+         }
+
+         .hel-subtitle {
+            color: #666;
+            margin-bottom: 0.5rem;
+         }
+
+         .faq-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+         }
+
+         .faq-item {
+            background: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 10px;
+            overflow: hidden;
+         }
+
+         .faq-question {
+            width: 100%;
+            padding: 1.2rem;
+            border: none;
+            background: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+         }
+
+         .faq-question span {
+            font-size: 1.5rem;
+            color: #8f0a18;
+         }
+
+         .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 1.2rem;
+            transition: max-height 0.3s ease;
+         }
+
+         .faq-answer p {
+            padding-bottom: 1.2rem;
+            line-height: 1.6;
+            color: #333;
+         }
+
+         .faq-item.active .faq-answer {
+            max-height: 200px;
+         }
+
+         .faq-item.active .faq-question span {
+            transform: rotate(45deg);
+         }
       </style>
    </head>
    <body>
@@ -325,69 +393,13 @@
             <a href="{% url 'produtos:produto_lista' %}">Produtos</a>
             <span class="user-info">{{ request.user.get_username }}</span>
             <a href="{% url 'cadastro:logout' %}" class="btn-logout">Sair</a>
+            <span
+               ><a href="{% url 'ajuda:central' %}"> Central de Ajuda </a></span
+            >
          </div>
       </nav>
 
-      <section class="page-section">
-         <div class="page-header">
-            <h1>
-               Administração {% if clientes %}
-               <span class="count-badge">{{ clientes|length }}</span>
-               {% endif %}
-            </h1>
-         </div>
-
-         {% if clientes %}
-         <input
-            type="text"
-            class="search-bar"
-            placeholder="Buscar cadastro..."
-            oninput="filterTable(this.value)"
-         />
-         {% endif %} {% if clientes %}
-         <table class="clients-table" id="clientsTable">
-            <thead>
-               <tr>
-                  <th>Nome</th>
-                  <th>Email</th>
-                  <th>Telefone</th>
-                  <th>CPF</th>
-                  <th>Nascimento</th>
-                  <th>Ações</th>
-               </tr>
-            </thead>
-            <tbody>
-               {% for cliente in clientes %}
-               <tr>
-                  <td><strong>{{ cliente.nome }}</strong></td>
-                  <td>{{ cliente.email }}</td>
-                  <td>{{ cliente.telefone }}</td>
-                  <td>{{ cliente.cpf }}</td>
-                  <td>{{ cliente.data_nascimento|date:'d/m/Y' }}</td>
-                  <td>
-                     <button
-                        class="btn-secondary-custom"
-                        onclick="openForm('editar', '{{ cliente.id }}', '{{ cliente.nome }}', '{{ cliente.email }}', '{{ cliente.telefone }}', '{{ cliente.endereco }}', '{{ cliente.data_nascimento|date:'Y-m-d' }}', '{{ cliente.cpf }}')"
-                     >
-                        Editar
-                     </button>
-                     <button
-                        class="btn-danger-custom"
-                        onclick="openDeleteModal('{{ cliente.id }}', '{{ cliente.nome }}')"
-                     >
-                        Excluir
-                     </button>
-                  </td>
-               </tr>
-               {% endfor %}
-            </tbody>
-         </table>
-         {% else %}
-         <div class="empty-state">
-            <h3>Nenhum cadastro</h3>
-         </div>
-         {% endif %}
-      </section>
+      <section class="page-section">{% block content %} {% endblock %}</section>
 
       <!-- Edit Form Modal -->
       <div class="form-overlay" id="formOverlay">

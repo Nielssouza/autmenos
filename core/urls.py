@@ -25,6 +25,9 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path('', TemplateView.as_view(template_name='landing.html'), name='home'),
     path('admin/', admin.site.urls),
+    
+     path('ajuda/', include('ajuda.urls')),
+    
     path('produtos/', include('produtos.urls', namespace='produtos')),
     # Mapear a URL para o app de cadastro usando include
     path('cadastro/', include('cadastro.urls', namespace='cadastro')),
