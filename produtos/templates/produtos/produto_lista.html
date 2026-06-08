@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="pt-br">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Lista de Produtos</title>
+   </head>
+
+   <body>
+      <h1>Produtos</h1>
+      <!doctype html>
+      <html lang="pt-br">
+         <head>
+            <meta charset="UTF-8" />
+            <meta
+               name="viewport"
+               content="width=device-width, initial-scale=1.0"
+            />
+            <title>Lista de Produtos</title>
+         </head>
+
+         <body>
+            {% extends 'produtos/base.html' %} {% block title %} Lista de
+            Produtos {% endblock %} {% block content %}
+
+            <h1>Produtos</h1>
+
+            <a href="{% url 'produtos:produto_novo' %}" class="btn">
+               Novo Produto
+            </a>
+
+            <div class="tabela-responsiva">
+               <table>
+                  <thead>
+                     <tr>
+                        <th>Código</th>
+                        <th>Descrição</th>
+                        <th>Grupo</th>
+                        <th>Marca</th>
+                        <th>Valor de Venda</th>
+                        <th>Estoque</th>
+                        <th>Ações</th>
+                     </tr>
+                  </thead>
+
+                  <tbody>
+                     {% for produto in produtos %}
+                     <tr>
+                        <td>{{ produto.codigo }}</td>
+                        <td>{{ produto.descricao }}</td>
+                        <td>{{ produto.grupo }}</td>
+                        <td>{{ produto.marca }}</td>
+                        <td>R$ {{ produto.valor_venda }}</td>
+                        <td>{{ produto.estoque }}</td>
+                        <td>
+                           <div class="acoes">
+                              <a
+                                 href="{% url 'produtos:produto_editar' produto.id %}"
+                                 class="btn-editar"
+                              >
+                                 Editar
+                              </a>
+
+                              <a
+                                 href="{% url 'produtos:produto_excluir' produto.id %}"
+                                 class="btn-excluir"
+                                 onclick="
+                                    return confirm(
+                                       'Deseja realmente excluir este produto?',
+                                    );
+                                 "
+                              >
+                                 Excluir
+                              </a>
+                           </div>
+                        </td>
+                     </tr>
+                     {% empty %}
+                     <tr>
+                        <td colspan="7">Nenhum produto cadastrado.</td>
+                     </tr>
+                     {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+            {% endblock %}
+         </body>
+      </html>
+   </body>
+</html>

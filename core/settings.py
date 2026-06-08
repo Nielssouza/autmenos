@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     
     # Local apps
     'cadastro',
+    'produtos',
+    'ajuda'
 ]
 
 MIDDLEWARE = [

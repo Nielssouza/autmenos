@@ -49,7 +49,7 @@ def cadastro_publico(request):
 
     return render(
         request,
-        'cadastro_publico.html',
+        'cadastro/cadastro_publico.html',
         {'form': form}
     )
 
