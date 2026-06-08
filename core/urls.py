@@ -7,6 +7,7 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from cadastro.views import dashboard
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -25,16 +26,16 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path('', TemplateView.as_view(template_name='landing.html'), name='home'),
     path('admin/', admin.site.urls),
-    
-    # Mapear a URL para o app de cadastro usando include
+
     path('cadastro/', include('cadastro.urls', namespace='cadastro')),
-        
-    # JWT Authentication
+    path('dashboard/admin/', dashboard, name='dashboard'),
+
+
+    
+
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 
-    # API browsable (login/logout para o browsable API do DRF)
     path('api-auth/', include('rest_framework.urls')),
-    
 ]

@@ -20,7 +20,7 @@ def login_view(request):
 
         if user is not None and user.is_staff:
             login(request, user)
-            return redirect('cadastro:admin')
+            return redirect('dashboard')
         else:
             messages.error(request, 'Usuário ou senha inválidos.')
 
@@ -83,7 +83,7 @@ def cadastro_admin(request):
 
             return render(
                 request,
-                'admin.html',
+                'cadastro.html',
                 {
                     'cadastros': cadastros,
                     'form': form,
@@ -94,6 +94,24 @@ def cadastro_admin(request):
     # FORA DO POST, MAS DENTRO DA FUNÇÃO
     form = ClienteForm()
     cadastros = Cadastro.objects.all()
+
+    print(cadastros.count())
+
+    return render(
+    request,
+    'cadastro.html',
+    {
+        'cadastros': cadastros,
+        'form': form,
+        'cadastro_editando': None,
+    }
+)
+
+@login_required
+def dashboard(request):
+
+    if not request.user.is_staff:
+        return redirect('cadastro:login')
 
     total_cadastros = Cadastro.objects.count()
 
@@ -111,15 +129,70 @@ def cadastro_admin(request):
 
     return render(
         request,
-        'admin.html',
+        'dashboard.html',
         {
-            'cadastros': cadastros,
-            'form': form,
-            'cadastro_editando': None,
-
             'total_cadastros': total_cadastros,
             'total_clientes': total_clientes,
             'total_fornecedores': total_fornecedores,
             'total_funcionarios': total_funcionarios,
+        }
+    )
+
+@login_required
+def excluir_cadastro(request, id):
+
+    if not request.user.is_staff:
+        return redirect('cadastro:login')
+
+    cadastro = get_object_or_404(
+        Cadastro,
+        id=id
+    )
+
+    cadastro.delete()
+
+    return redirect('cadastro:admin')
+
+@login_required
+def editar_cadastro(request, id):
+
+    if not request.user.is_staff:
+        return redirect('cadastro:login')
+
+    cadastro = get_object_or_404(
+        Cadastro,
+        id=id
+    )
+
+    if request.method == 'POST':
+
+        form = ClienteForm(
+            request.POST,
+            instance=cadastro
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect(
+                'cadastro:admin'
+            )
+
+    else:
+
+        form = ClienteForm(
+            instance=cadastro
+        )
+
+    cadastros = Cadastro.objects.all()
+
+    return render(
+        request,
+        'cadastro.html',
+        {
+            'cadastros': cadastros,
+            'form': form,
+            'cadastro_editando': cadastro,
         }
     )
