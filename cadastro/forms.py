@@ -54,27 +54,116 @@ class ClienteForm(forms.ModelForm):
             'tipo_cadastro',
             'tipo_pessoa',
             'nome',
+            'razao_social',
+            'nome_fantasia',
             'email',
             'telefone',
-            'endereco',
+            'cep',
+            'logradouro',
+            'bairro',
+            'cidade',
+            'estado',
             'data_nascimento',
             'cpf',
             'cnpj',
+            'cargo',
+            'salario',
+            'data_admissao',
+            'matricula',
         ]
 
         widgets = {
-            'tipo_cadastro': forms.Select(attrs={'class': 'form-control'}),
-            'tipo_pessoa': forms.Select(attrs={'class': 'form-control'}),
-            'nome': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
-            'telefone': forms.TextInput(attrs={'class': 'form-control'}),
-            'endereco': forms.TextInput(attrs={'class': 'form-control'}),
+            'tipo_cadastro': forms.Select(
+                attrs={'class': 'form-control'}
+            ),
+
+            'tipo_pessoa': forms.Select(
+                attrs={'class': 'form-control'}
+            ),
+
+            'nome': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+
+            'email': forms.EmailInput(
+                attrs={'class': 'form-control'}
+            ),
+
+            'telefone': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+
+            'cep': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': '00000-000'
+            }
+            ),
+
+            'logradouro': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+
+            'bairro': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+
+            'cidade': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+
+            'estado': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'maxlength': '2'
+                }
+            ),
+
             'data_nascimento': forms.DateInput(
                 attrs={
                     'class': 'form-control',
                     'type': 'date'
                 }
             ),
-            'cpf': forms.TextInput(attrs={'class': 'form-control'}),
-            'cnpj': forms.TextInput(attrs={'class': 'form-control'}),
+
+            'cpf': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+
+            'cnpj': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+
+            'cargo': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+
+            'salario': forms.NumberInput(
+                attrs={
+                    'class': 'form-control',
+                    'step': '0.01'
+                }
+            ),
+
+            'data_admissao': forms.DateInput(
+                attrs={
+                    'class': 'form-control',
+                    'type': 'date'
+                }
+            ),
+
+            'matricula': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+            'nome': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+
+            'razao_social': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+
+            'nome_fantasia': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
         }
