@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 #Tabela de Produtos
@@ -63,3 +63,60 @@ class Produto(models.Model):
     
     def __str__(self):
         return f'{self.codigo} - {self.descricao}'
+
+class MovimentacaoEstoque(models.Model):
+    
+    TIPOS = (
+        ('E', 'Entrada'),
+        ('S', 'Saída'),
+    )
+    
+    produto = models.ForeignKey(
+        Produto,
+        on_delete=models.CASCADE
+    )
+    
+    tipo = models.CharField(
+        max_length=1,
+        choices=TIPOS
+    )
+    
+    quantidade = models.IntegerField()
+    
+    observacao = models.CharField(
+        max_length=255
+    )
+    
+    criado_em = models.DateTimeField(
+        auto_now_add=True
+    )
+    
+class HistoricoProduto(models.Model):
+    
+    produto = models.ForeignKey(
+        Produto,
+        on_delete=models.CASCADE
+    )
+    
+    descricao = models.TextField()
+    
+    usuario = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    
+    criado_em = models.DateTimeField(
+        auto_now_add=True
+    )
+    
+    @property
+    def status_estoque(self):
+
+        if self.estoque <= 5:
+            return 'Baixo'
+
+        elif self.estoque <= 10:
+            return 'Atenção'
+
+        return 'Normal'
