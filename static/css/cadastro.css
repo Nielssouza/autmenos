@@ -1,0 +1,86 @@
+/* FILTROS E AÇÕES */
+
+.actions{
+    display:flex;
+    gap:10px;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+}
+
+.search-input{
+    flex:1;
+    min-width:250px;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#111;
+    color:#fff;
+}
+
+/* TABELA */
+
+.table-container{
+    background:#111;
+    border:1px solid #222;
+    border-radius:12px;
+    overflow:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+thead{
+    background:#181818;
+}
+
+th{
+    text-align:left;
+    padding:16px;
+    font-size:14px;
+    white-space:nowrap;
+}
+
+td{
+    padding:16px;
+    border-top:1px solid #222;
+    white-space:nowrap;
+}
+
+tbody tr:hover{
+    background:#1a1a1a;
+}
+
+/* MODAL */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.85);
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+}
+
+.modal-content{
+    width:900px;
+    max-height:90vh;
+    overflow:auto;
+    background:#111;
+    border:1px solid #222;
+    border-radius:12px;
+    padding:30px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:20px;
+}
+
+.modal-header span{
+    cursor:pointer;
+    font-size:30px;
+}

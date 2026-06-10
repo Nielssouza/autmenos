@@ -1,0 +1,199 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUTMENOS - Cadastros</title>
+
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cadastro.css' %}">
+</head>
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            AUTMENOS
+        </div>
+
+        <nav class="menu">
+
+            <a href="{% url 'dashboard' %}">
+                Dashboard
+            </a>
+
+            <a href="{% url 'cadastro:admin' %}" class="active">
+                Cadastros
+            </a>
+
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="{% url 'cadastro:logout' %}">
+                Sair
+            </a>
+        </div>
+
+    </aside>
+
+    <main class="content">
+
+        <header class="topbar">
+
+            <div>
+                <h1>Cadastros</h1>
+                <p>Gerencie todos os registros do sistema</p>
+            </div>
+
+            <div class="user-info">
+                {{ request.user.username }}
+            </div>
+
+        </header>
+
+        <section class="actions">
+
+            <input
+                type="text"
+                id="searchInput"
+                class="search-input"
+                placeholder="Buscar cadastro..."
+            >
+
+            <select
+                id="filtroTipo"
+                class="search-input"
+            >
+                <option value="">
+                    Todos
+                </option>
+
+                <option value="CLIENTE">
+                    Clientes
+                </option>
+
+                <option value="FORNECEDOR">
+                    Fornecedores
+                </option>
+
+                <option value="FUNCIONARIO">
+                    Funcionários
+                </option>
+            </select>
+
+            <button id="exportCSV" class="btn-secondary">
+                CSV
+            </button>
+
+            <button id="exportExcel" class="btn-secondary">
+                Excel
+            </button>
+
+            <button id="exportPDF" class="btn-secondary">
+                PDF
+            </button>
+
+        </section>
+
+        <section class="table-container">
+
+            <table id="cadastroTable">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tipo</th>
+                        <th>Pessoa</th>
+                        <th>Nome / Razão Social</th>
+                        <th>CPF / CNPJ</th>
+                        <th>Email</th>
+                        <th>Telefone</th>
+                        <th>Cidade</th>
+                        <th>Estado</th>
+                        <th>Cargo</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                {% for cadastro in cadastros %}
+
+                    <tr data-tipo="{{ cadastro.tipo_cadastro }}">
+
+                        <td>{{ cadastro.id }}</td>
+
+                        <td>{{ cadastro.tipo_cadastro }}</td>
+
+                        <td>{{ cadastro.tipo_pessoa }}</td>
+
+                        <td>
+                            {% if cadastro.tipo_pessoa == 'PF' %}
+                                {{ cadastro.nome }}
+                            {% else %}
+                                {{ cadastro.razao_social }}
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if cadastro.tipo_pessoa == 'PF' %}
+                                {{ cadastro.cpf }}
+                            {% else %}
+                                {{ cadastro.cnpj }}
+                            {% endif %}
+                        </td>
+
+                        <td>{{ cadastro.email }}</td>
+                        <td>{{ cadastro.telefone }}</td>
+                        <td>{{ cadastro.cidade }}</td>
+                        <td>{{ cadastro.estado }}</td>
+                        <td>{{ cadastro.cargo }}</td>
+
+                        <td>
+
+                            <a
+                                href="{% url 'cadastro:editar_cadastro' cadastro.id %}"
+                                class="btn-edit"
+                            >
+                                Editar
+                            </a>
+
+                            <a
+                                href="{% url 'cadastro:excluir_cadastro' cadastro.id %}"
+                                class="btn-delete"
+                                onclick="return confirm('Deseja mesmo excluir este cadastro?')"
+                            >
+                                Excluir
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+                        <td colspan="11">
+                            Nenhum cadastro encontrado.
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="{% static 'js/cadastro.js' %}"></script>
+
+</body>
+</html>
