@@ -7,7 +7,7 @@
    </head>
 
    <body>
-      <h1>Produtos</h1>
+      <!--<h1>Produtos</h1>-->
       <!doctype html>
       <html lang="pt-br">
          <head>
@@ -23,65 +23,116 @@
             {% extends 'produtos/base.html' %} {% block title %} Lista de
             Produtos {% endblock %} {% block content %}
 
-            <h1>Produtos</h1>
+            <div class="products-page">
+               <div class="page-header">
+                  <div>
+                     <span class="section-label">Gestão de Estoque</span>
+                     <h1>Produtos</h1>
+                     <p>
+                        Cadastre, edite e acompanhe os produtos disponíveis no
+                        sistema.
+                     </p>
+                  </div>
 
-            <a href="{% url 'produtos:produto_novo' %}" class="btn">
-               Novo Produto
-            </a>
+                  <a href="{% url 'produtos:produto_novo' %}" class="btn-new">
+                     + Novo Produto
+                  </a>
+               </div>
 
-            <div class="tabela-responsiva">
-               <table>
-                  <thead>
-                     <tr>
-                        <th>Código</th>
-                        <th>Descrição</th>
-                        <th>Grupo</th>
-                        <th>Marca</th>
-                        <th>Valor de Venda</th>
-                        <th>Estoque</th>
-                        <th>Ações</th>
-                     </tr>
-                  </thead>
+               <div class="summary-cards">
+                  <div class="summary-card">
+                     <span>Total de Produtos</span>
+                     <strong>{{ produtos|length }}</strong>
+                  </div>
 
-                  <tbody>
-                     {% for produto in produtos %}
-                     <tr>
-                        <td>{{ produto.codigo }}</td>
-                        <td>{{ produto.descricao }}</td>
-                        <td>{{ produto.grupo }}</td>
-                        <td>{{ produto.marca }}</td>
-                        <td>R$ {{ produto.valor_venda }}</td>
-                        <td>{{ produto.estoque }}</td>
-                        <td>
-                           <div class="acoes">
+                  <div class="summary-card">
+                     <span>Produtos Ativos</span>
+                     <strong>{{ produtos|length }}</strong>
+                  </div>
+
+                  <div class="summary-card">
+                     <span>Estoque Baixo</span>
+                     <strong>0</strong>
+                  </div>
+               </div>
+
+               <div class="table-card">
+                  <div class="table-header">
+                     <h2>Lista de Produtos</h2>
+
+                     <input
+                        type="text"
+                        placeholder="Buscar produto..."
+                        class="search-input"
+                     />
+                  </div>
+
+                  <table class="products-table">
+                     <thead>
+                        <tr>
+                           <th>Código</th>
+                           <th>Descrição</th>
+                           <th>Grupo</th>
+                           <th>Marca</th>
+                           <th>Valor de Venda</th>
+                           <th>Estoque</th>
+                           <th>Status</th>
+                           <th>Ações</th>
+                        </tr>
+                     </thead>
+
+                     <tbody>
+                        {% for produto in produtos %}
+                        <tr>
+                           <td>{{ produto.codigo }}</td>
+                           <td>
+                              <strong>{{ produto.descricao }}</strong>
+                           </td>
+                           <td>{{ produto.grupo }}</td>
+                           <td>{{ produto.marca }}</td>
+                           <td>R$ {{ produto.valor_venda }}</td>
+                           <td>
+                              <span class="stock-badge">
+                                 {{ produto.estoque }}
+                              </span>
+                           </td>
+                           <td>
+                              {% if produto.status_estoque == 'Baixo' %}
+                              <span class="badge-danger">Baixo</span>
+
+                              {% elif produto.status_estoque == 'Atenção' %}
+                              <span class="badge-warning">Atenção</span>
+
+                              {% else %}
+                              <span class="badge-success">Normal</span>
+                              {% endif %}
+                           </td>
+                           <td class="actions">
                               <a
                                  href="{% url 'produtos:produto_editar' produto.id %}"
-                                 class="btn-editar"
+                                 class="btn-edit"
                               >
-                                 Editar
+                                 ✏️ Editar
                               </a>
 
                               <a
                                  href="{% url 'produtos:produto_excluir' produto.id %}"
-                                 class="btn-excluir"
-                                 onclick="
-                                    return confirm(
-                                       'Deseja realmente excluir este produto?',
-                                    );
-                                 "
+                                 class="btn-delete"
                               >
-                                 Excluir
+                                 🗑️ Excluir
                               </a>
-                           </div>
-                        </td>
-                     </tr>
-                     {% empty %}
-                     <tr>
-                        <td colspan="7">Nenhum produto cadastrado.</td>
-                     </tr>
-                     {% endfor %}
-                  </tbody>
-               </table>
+                           </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                           <td colspan="7" class="empty-row">
+                              Nenhum produto cadastrado.
+                           </td>
+                        </tr>
+                        {% endfor %}
+                     </tbody>
+                  </table>
+               </div>
             </div>
             {% endblock %}
          </body>
