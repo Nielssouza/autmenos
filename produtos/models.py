@@ -44,9 +44,8 @@ class Produto(models.Model):
         verbose_name='Valor de Venda'
     )
     
-    estoque = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+    estoque = models.CharField(
+        max_length=10,
         default=0,
         verbose_name='Estoque'
     )
