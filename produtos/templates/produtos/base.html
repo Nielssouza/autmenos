@@ -39,16 +39,16 @@
          }
 
          main {
-            padding: 40px 20px;
+            padding: 40px 60px;
          }
 
          .container {
             width: 95%;
-            max-width: 800px;
+            max-width: 1400px;
             margin: 0 auto;
             border: 1px solid #000;
             border-radius: 8px;
-            padding: 30px;
+            padding: 40px;
          }
 
          h1 {
@@ -188,7 +188,7 @@
          }
 
          .products-page {
-            max-width: 1100px;
+            max-width: 100%;
             margin: 0 auto;
          }
 
@@ -280,6 +280,7 @@
 
          .products-table {
             width: 100%;
+            min-width: 1100px;
             border-collapse: collapse;
          }
 
@@ -372,6 +373,54 @@
             border-radius: 999px;
             font-size: 0.8rem;
             font-weight: 600;
+         }
+
+         .price-cell {
+            white-space: nowrap;
+            text-align: right;
+            font-weight: 600;
+         }
+
+         .history-card {
+            margin-top: 2rem;
+         }
+
+         .btn-move {
+            background: #fff;
+            color: #000;
+            border: 1px solid #000;
+            padding: 0.5rem 0.8rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-left: 0.4rem;
+         }
+
+         .btn-move:hover {
+            background: #000;
+            color: #fff;
+         }
+
+         .filters {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+         }
+
+         .filters .search-input {
+            min-width: 220px;
+         }
+
+         @media (max-width: 768px) {
+            .filters {
+               width: 100%;
+               flex-direction: column;
+            }
+
+            .filters .search-input {
+               width: 100%;
+            }
          }
       </style>
    </head>

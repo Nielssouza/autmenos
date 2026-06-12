@@ -27,4 +27,10 @@ urlpatterns = [
           views.produto_excluir,
           name='produto_excluir'
           ),
+     
+     #Movimentar produto
+     path('movimentar/<int:pk>/',
+          views.produto_movimentar,
+          name='produto_movimentar'
+          ),
 ]

@@ -1,0 +1,32 @@
+{% extends 'produtos/base.html' %} {% block title %} Movimentação de Estoque
+{%endblock %} {% block content %}
+
+<h1>Movimentação de Estoque</h1>
+
+<p class="descricao">Produto: <strong>{{ produto.descricao }}</strong></p>
+
+<form method="POST">
+   {% csrf_token %}
+
+   <label>Tipo</label>
+   <select name="tipo" required>
+      <option value="E">Entrada</option>
+      <option value="S">Saída</option>
+   </select>
+
+   <label>Quantidade</label>
+   <input type="number" name="quantidade" min="1" required />
+
+   <label>Observação</label>
+   <textarea
+      name="observacao"
+      rows="4"
+      placeholder="Ex: Entrada inicial, ajuste de estoque, venda..."
+   ></textarea>
+
+   <button type="submit">Salvar Movimentação</button>
+</form>
+
+<a href="{% url 'produtos:produto_lista' %}" class="voltar"> ← Voltar </a>
+
+{% endblock %}

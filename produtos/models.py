@@ -4,118 +4,57 @@ from django.contrib.auth.models import User
 
 #Tabela de Produtos
 class Produto(models.Model):
-    codigo = models.CharField(
-        max_length=20,
-        unique=True,
-        verbose_name='Código'
-    )
-    
-    descricao = models.CharField(
-        max_length=200,
-        verbose_name='Descrição'
-    )
-    
-    grupo = models.CharField(
-        max_length=100,
-        verbose_name='Grupo'
-    )
-    
-    marca = models.CharField(
-        max_length=100,
-        verbose_name='Marca'
-    )
-    
-    unidade = models.CharField(
-        max_length=10,
-        verbose_name='Unidade'
-    )
-    
-    valor_custo = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        default=0,
-        verbose_name='Valor de Custo'
-    )
-    
-    valor_venda = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        default=0,
-        verbose_name='Valor de Venda'
-    )
-    
-    estoque = models.CharField(
-        max_length=10,
-        default=0,
-        verbose_name='Estoque'
-    )
-    
-    ativo = models.BooleanField(
-        default=True,
-        verbose_name='Ativo'
-    )
-    
-    data_cadastro = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name='Data de Cadastro'
-    )
-    
+    codigo = models.CharField(max_length=20, unique=True, verbose_name='Código')
+    descricao = models.CharField(max_length=200, verbose_name='Descrição')
+    grupo = models.CharField(max_length=100, verbose_name='Grupo')
+    marca = models.CharField(max_length=100, verbose_name='Marca')
+    unidade = models.CharField(max_length=10, verbose_name='Unidade')
+    valor_custo = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name='Valor de Custo')
+    valor_venda = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name='Valor de Venda')
+    estoque = models.CharField(max_length=10, default=0, verbose_name='Estoque')
+    ativo = models.BooleanField(default=True, verbose_name='Ativo')
+    data_cadastro = models.DateTimeField(auto_now_add=True, verbose_name='Data de Cadastro')
+
+    @property
+    def status_estoque(self):
+        estoque_atual = int(self.estoque or 0)
+
+        if estoque_atual <= 5:
+            return 'Baixo'
+        elif estoque_atual <= 10:
+            return 'Atenção'
+        return 'Normal'
+
     def __str__(self):
         return f'{self.codigo} - {self.descricao}'
-
-class MovimentacaoEstoque(models.Model):
     
+class MovimentacaoEstoque(models.Model):
     TIPOS = (
         ('E', 'Entrada'),
         ('S', 'Saída'),
     )
-    
+
     produto = models.ForeignKey(
         Produto,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='movimentacoes'
     )
-    
+
     tipo = models.CharField(
         max_length=1,
         choices=TIPOS
     )
-    
+
     quantidade = models.IntegerField()
-    
+
     observacao = models.CharField(
-        max_length=255
+        max_length=255,
+        blank=True
     )
-    
+
     criado_em = models.DateTimeField(
         auto_now_add=True
     )
-    
-class HistoricoProduto(models.Model):
-    
-    produto = models.ForeignKey(
-        Produto,
-        on_delete=models.CASCADE
-    )
-    
-    descricao = models.TextField()
-    
-    usuario = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True
-    )
-    
-    criado_em = models.DateTimeField(
-        auto_now_add=True
-    )
-    
-    @property
-    def status_estoque(self):
 
-        if self.estoque <= 5:
-            return 'Baixo'
-
-        elif self.estoque <= 10:
-            return 'Atenção'
-
-        return 'Normal'
+    def __str__(self):
+        return f'{self.produto.descricao} - {self.get_tipo_display()}'

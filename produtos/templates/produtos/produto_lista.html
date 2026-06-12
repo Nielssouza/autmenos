@@ -42,32 +42,42 @@
                <div class="summary-cards">
                   <div class="summary-card">
                      <span>Total de Produtos</span>
-                     <strong>{{ produtos|length }}</strong>
+                     <strong>{{ total_produtos }}</strong>
                   </div>
 
                   <div class="summary-card">
                      <span>Produtos Ativos</span>
-                     <strong>{{ produtos|length }}</strong>
+                     <strong>{{ produtos_ativos }}</strong>
                   </div>
 
                   <div class="summary-card">
                      <span>Estoque Baixo</span>
-                     <strong>0</strong>
+                     <strong>{{ estoque_baixo }}</strong>
                   </div>
                </div>
 
                <div class="table-card">
                   <div class="table-header">
                      <h2>Lista de Produtos</h2>
+                     
+                     <div class="filters">
+                        <input
+                           type="text"
+                           placeholder="Buscar produto..."
+                           class="search-input"
+                           id="searchProduct"
+                        />
 
-                     <input
-                        type="text"
-                        placeholder="Buscar produto..."
-                        class="search-input"
-                     />
+                        <select id="statusFilter" class="search-input">
+                           <option value="todos">Todos os status</option>
+                           <option value="normal">Normal</option>
+                           <option value="atenção">Atenção</option>
+                           <option value="baixo">Baixo</option>
+                        </select>
+                     </div>
                   </div>
 
-                  <table class="products-table">
+                  <table class="products-table" id="productsTable">
                      <thead>
                         <tr>
                            <th>Código</th>
@@ -90,13 +100,15 @@
                            </td>
                            <td>{{ produto.grupo }}</td>
                            <td>{{ produto.marca }}</td>
-                           <td>R$ {{ produto.valor_venda }}</td>
+                           <td class="price-cell">
+                              R$ {{ produto.valor_venda }}
+                           </td>
                            <td>
                               <span class="stock-badge">
                                  {{ produto.estoque }}
                               </span>
                            </td>
-                           <td>
+                           <td class="status-cell">
                               {% if produto.status_estoque == 'Baixo' %}
                               <span class="badge-danger">Baixo</span>
 
@@ -116,6 +128,13 @@
                               </a>
 
                               <a
+                                 href="{% url 'produtos:produto_movimentar' produto.id %}"
+                                 class="btn-move"
+                              >
+                                 Movimentar
+                              </a>
+
+                              <a
                                  href="{% url 'produtos:produto_excluir' produto.id %}"
                                  class="btn-delete"
                               >
@@ -132,8 +151,94 @@
                         {% endfor %}
                      </tbody>
                   </table>
+
+                  <div class="table-card history-card">
+                     <div class="table-header">
+                        <h2>Histórico de Movimentações</h2>
+                     </div>
+
+                     <table class="products-table">
+                        <thead>
+                           <tr>
+                              <th>Data/Hora</th>
+                              <th>Produto</th>
+                              <th>Tipo</th>
+                              <th>Quantidade</th>
+                              <th>Observação</th>
+                           </tr>
+                        </thead>
+
+                        <tbody>
+                           {% for movimentacao in movimentacoes %}
+                           <tr>
+                              <td>
+                                 {{ movimentacao.criado_em|date:"d/m/Y H:i" }}
+                              </td>
+                              <td>{{ movimentacao.produto.descricao }}</td>
+                              <td>
+                                 {% if movimentacao.tipo == 'E' %}
+                                 <span class="badge-success">Entrada</span>
+                                 {% else %}
+                                 <span class="badge-danger">Saída</span>
+                                 {% endif %}
+                              </td>
+
+                              <td>
+                                 {% if movimentacao.tipo == 'E' %}
+                                    + {{movimentacao.quantidade}}
+                                 {% else %} 
+                                    - {{ movimentacao.quantidade }}
+                                 {% endif %}
+                              </td>
+
+                              <td>{{ movimentacao.observacao }}</td>
+                           </tr>
+                           {% empty %}
+                           <tr>
+                              <td colspan="5" class="empty-row">
+                                 Nenhuma movimentação registrada.
+                              </td>
+                           </tr>
+                           {% endfor %}
+                        </tbody>
+                     </table>
+                  </div>
                </div>
             </div>
+            <script>
+               const searchInput = document.getElementById("searchProduct");
+               const statusFilter = document.getElementById("statusFilter");
+               const table = document.getElementById("productsTable");
+               const rows = table.querySelectorAll("tbody tr");
+
+               function filterProducts() {
+                  const searchValue = searchInput.value.toLowerCase();
+                  const statusValue = statusFilter.value.toLowerCase();
+
+                  rows.forEach(function (row) {
+                     const rowText = row.innerText.toLowerCase();
+                     const statusCell = row.querySelector(".status-cell");
+
+                     const rowStatus = statusCell
+                        ? statusCell.innerText.toLowerCase().trim()
+                        : "";
+
+                     const matchesSearch = rowText.includes(searchValue);
+
+                     const matchesStatus =
+                        statusValue === "todos" || rowStatus === statusValue;
+
+                     if (matchesSearch && matchesStatus) {
+                        row.style.display = "";
+                     } else {
+                        row.style.display = "none";
+                     }
+                  });
+               }
+
+               searchInput.addEventListener("input", filterProducts);
+               statusFilter.addEventListener("change", filterProducts);
+            </script>
             {% endblock %}
          </body>
       </html>
