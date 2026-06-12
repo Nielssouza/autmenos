@@ -35,10 +35,27 @@ def produto_lista(request):
         if produto.status_estoque == 'Baixo'
     )
 
+    valor_total_estoque = sum(
+        int(produto.estoque or 0) * produto.valor_venda
+        for produto in produtos
+    )
+    
+    valor_total_estoque_formatado = (
+        f'{valor_total_estoque:,.2f}'
+        .replace(',', 'X')
+        .replace('.', ',')
+        .replace('X', '.')
+    )
+    
+    sem_estoque = sum(
+        1 for produto in produtos
+        if produto.status_estoque == 'Sem Estoque'
+    )
+
     movimentacoes = MovimentacaoEstoque.objects.select_related(
         'produto'
     ).order_by('-criado_em')[:10]
-
+    
     return render(
         request,
         'produtos/produto_lista.html',
@@ -47,7 +64,10 @@ def produto_lista(request):
             'total_produtos': total_produtos,
             'produtos_ativos': produtos_ativos,
             'estoque_baixo': estoque_baixo,
+            'valor_total_estoque': valor_total_estoque,
+            'valor_total_estoque_formatado': valor_total_estoque_formatado,
             'movimentacoes': movimentacoes,
+            'sem_estoque': sem_estoque,
         }
     )
 #Editar um produto
@@ -81,15 +101,14 @@ def produto_excluir(request, pk):
 
 #Movimento de produto
 def produto_movimentar(request, pk):
-
     produto = get_object_or_404(
         Produto,
         pk=pk
     )
 
     if request.method == 'POST':
-
         tipo = request.POST.get('tipo')
+
         quantidade = int(
             request.POST.get('quantidade')
         )
@@ -98,25 +117,26 @@ def produto_movimentar(request, pk):
             'observacao'
         )
 
-        estoque_atual = int(produto.estoque)
+        estoque_anterior = int(
+            produto.estoque or 0
+        )
 
         if tipo == 'E':
-            produto.estoque = (
-                estoque_atual + quantidade
-            )
-
+            estoque_atual = estoque_anterior + quantidade
         else:
-            produto.estoque = (
-                estoque_atual - quantidade
-            )
+            estoque_atual = estoque_anterior - quantidade
 
+        produto.estoque = estoque_atual
         produto.save()
 
         MovimentacaoEstoque.objects.create(
             produto=produto,
             tipo=tipo,
             quantidade=quantidade,
-            observacao=observacao
+            estoque_anterior=estoque_anterior,
+            estoque_atual=estoque_atual,
+            observacao=observacao,
+            usuario=request.user if request.user.is_authenticated else None
         )
 
         messages.success(

@@ -19,7 +19,9 @@ class Produto(models.Model):
     def status_estoque(self):
         estoque_atual = int(self.estoque or 0)
 
-        if estoque_atual <= 5:
+        if estoque_atual == 0:
+            return 'Sem Estoque'
+        elif estoque_atual <= 5:
             return 'Baixo'
         elif estoque_atual <= 10:
             return 'Atenção'
@@ -47,14 +49,35 @@ class MovimentacaoEstoque(models.Model):
 
     quantidade = models.IntegerField()
 
+    estoque_anterior = models.IntegerField(
+        default=0
+    )
+
+    estoque_atual = models.IntegerField(
+        default=0
+    )
+
     observacao = models.CharField(
         max_length=255,
+        blank=True
+    )
+
+    usuario = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
         blank=True
     )
 
     criado_em = models.DateTimeField(
         auto_now_add=True
     )
+
+    @property
+    def quantidade_formatada(self):
+        if self.tipo == 'E':
+            return f'+{self.quantidade}'
+        return f'-{self.quantidade}'
 
     def __str__(self):
         return f'{self.produto.descricao} - {self.get_tipo_display()}'

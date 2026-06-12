@@ -54,6 +54,16 @@
                      <span>Estoque Baixo</span>
                      <strong>{{ estoque_baixo }}</strong>
                   </div>
+
+                  <div class="summary-card">
+                     <span>Sem Estoque</span>
+                     <strong>{{ sem_estoque }}</strong>
+                  </div>
+
+                  <div class="summary-card">
+                     <span>Valor em Estoque</span>
+                     <strong>R$ {{ valor_total_estoque_formatado }}</strong>
+                  </div>
                </div>
 
                <div class="table-card">
@@ -73,6 +83,7 @@
                            <option value="normal">Normal</option>
                            <option value="atenção">Atenção</option>
                            <option value="baixo">Baixo</option>
+                           <option value="sem estoque">Sem Estoque</option>
                         </select>
                      </div>
                   </div>
@@ -109,7 +120,10 @@
                               </span>
                            </td>
                            <td class="status-cell">
-                              {% if produto.status_estoque == 'Baixo' %}
+                              {% if produto.status_estoque == 'Sem Estoque' %}
+                              <span class="badge-dark">Sem Estoque</span>
+                              
+                              {% elif produto.status_estoque == 'Baixo' %}
                               <span class="badge-danger">Baixo</span>
 
                               {% elif produto.status_estoque == 'Atenção' %}
@@ -163,7 +177,9 @@
                               <th>Data/Hora</th>
                               <th>Produto</th>
                               <th>Tipo</th>
-                              <th>Quantidade</th>
+                              <th>Qtd.</th>
+                              <th>Estoque</th>
+                              <th>Usuário</th>
                               <th>Observação</th>
                            </tr>
                         </thead>
@@ -171,31 +187,33 @@
                         <tbody>
                            {% for movimentacao in movimentacoes %}
                            <tr>
-                              <td>
-                                 {{ movimentacao.criado_em|date:"d/m/Y H:i" }}
-                              </td>
+                              <td>{{ movimentacao.criado_em|date:"d/m/Y H:i" }}</td>
                               <td>{{ movimentacao.produto.descricao }}</td>
                               <td>
                                  {% if movimentacao.tipo == 'E' %}
-                                 <span class="badge-success">Entrada</span>
+                                    <span class="badge-success">Entrada</span>
                                  {% else %}
-                                 <span class="badge-danger">Saída</span>
+                                    <span class="badge-danger">Saída</span>
                                  {% endif %}
                               </td>
-
+                              <td>{{ movimentacao.quantidade_formatada }}</td>
                               <td>
-                                 {% if movimentacao.tipo == 'E' %}
-                                    + {{movimentacao.quantidade}}
-                                 {% else %} 
-                                    - {{ movimentacao.quantidade }}
+                                 {{ movimentacao.estoque_anterior }}
+                                 →
+                                 {{ movimentacao.estoque_atual }}
+                              </td>
+                              <td>
+                                 {% if movimentacao.usuario %}
+                                    {{ movimentacao.usuario.username }}
+                                 {% else %}
+                                    Sistema
                                  {% endif %}
                               </td>
-
                               <td>{{ movimentacao.observacao }}</td>
                            </tr>
                            {% empty %}
                            <tr>
-                              <td colspan="5" class="empty-row">
+                              <td colspan="7" class="empty-row">
                                  Nenhuma movimentação registrada.
                               </td>
                            </tr>
