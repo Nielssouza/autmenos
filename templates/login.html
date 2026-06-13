@@ -41,10 +41,10 @@
             <h1>Entrar</h1>
             <p>Acesse com sua conta de administrador.</p>
 
-            {% if messages %}
-               {% for message in messages %}
-               <div class="alert-error">{{ message }}</div>
-               {% endfor %}
+            {% if erro %}
+               <div class="alert-error">
+                  {{ erro }}
+               </div>
             {% endif %}
 
             <form method="post">
